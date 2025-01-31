@@ -8,8 +8,13 @@ import java.util.Date;
 @Table(name = "covoiturage")
 public class Covoiturage {
 
-    @EmbeddedId
-    private CovoituragePK covoituragePK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "covoiturage_id")
+    private Integer covoiturageId;
+
+    @Column(name = "utilisateur_id")
+    private Integer utilisateurId;
     @Column(name = "date_depart")
     private Date dateDepart;
     @Column(name = "heure_depart")
