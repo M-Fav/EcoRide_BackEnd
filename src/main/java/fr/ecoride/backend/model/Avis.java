@@ -8,7 +8,7 @@ public class Avis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "avis_id")
-    private long avisId;
+    private Integer avisId;
     @Column(name = "commentaire")
     private String commentaire;
     @Column(name = "note")
@@ -28,7 +28,7 @@ public class Avis {
         return avisId;
     }
 
-    public void setAvisId(long avisId) {
+    public void setAvisId(Integer avisId) {
         this.avisId = avisId;
     }
 

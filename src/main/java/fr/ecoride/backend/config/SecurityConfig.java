@@ -48,11 +48,9 @@ public class SecurityConfig {
                                 "/login/**",
                                         "/register/**",
                                         "/refresh_token/**",
-                                        "/swagger-ui.html",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**")
+                                        "/donneesEntreprise/**")
                                 .permitAll()
-                                .requestMatchers("/admin_only/**").hasAuthority(String.valueOf(Constantes.Role.ADMIN))
+                                .requestMatchers("/admin_only/**").hasAuthority(String.valueOf(Constantes.ADMIN))
                                 .anyRequest()
                                 .authenticated()
                 ).userDetailsService(userDetailsServiceImp)

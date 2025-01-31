@@ -1,26 +1,24 @@
-package fr.ecoride.backend.model;
+package fr.ecoride.backend.dto.voiture;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 
-@Entity
-public class Voiture {
+public class VoitureRequestDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "voiture_id")
-    private Integer voitureId;
-    @Column(name = "modele")
+    private Integer user_id;
     private String modele;
-    @Column(name = "immatriculation")
     private String immatriculation;
-    @Column(name = "energie")
     private String energie;
-    @Column(name = "couleur")
     private String couleur;
-    @Column(name = "date_premiere_immatriculation")
     private String datePremiereImmatriculation;
-    @Column(name = "marque")
     private String marque;
+
+    public Integer getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
+    }
 
     public String getModele() {
         return modele;
