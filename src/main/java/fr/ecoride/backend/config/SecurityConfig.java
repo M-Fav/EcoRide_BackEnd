@@ -48,7 +48,8 @@ public class SecurityConfig {
                                 "/login/**",
                                         "/register/**",
                                         "/refresh_token/**",
-                                        "/donneesEntreprise/**")
+                                        "/donneesEntreprise/**",
+                                        "/voitures/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**").hasAuthority(String.valueOf(Constantes.ADMIN))
                                 .anyRequest()
