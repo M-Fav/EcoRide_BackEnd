@@ -9,8 +9,8 @@ public class Token {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "token_id")
+    private Integer tokenId;
 
     @Column(name = "access_token")
     private String accessToken;
@@ -21,16 +21,23 @@ public class Token {
     @Column(name = "is_logged_out")
     private boolean loggedOut;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Integer userId;
 
-    public Integer getId() {
-        return id;
+    public Integer getTokenId() {
+        return tokenId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setTokenId(Integer tokenId) {
+        this.tokenId = tokenId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getAccessToken() {
@@ -47,14 +54,6 @@ public class Token {
 
     public void setLoggedOut(boolean loggedOut) {
         this.loggedOut = loggedOut;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getRefreshToken() {
