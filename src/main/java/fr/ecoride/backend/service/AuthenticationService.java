@@ -40,15 +40,13 @@ public class AuthenticationService {
     public AuthenticationResponse register(User request) {
 
         // On controle si le User existe. s'il existe on l'authentifie
-        if(userRepository.findByPseudo(request.getUsername()).isPresent()) {
+        if(userRepository.findByPseudo(request.getPseudo()).isPresent()) {
             return new AuthenticationResponse(null, null,"L'utilisateur existe déjà");
         }
 
-        User user = new User();
-        user.setUsername(request.getUsername());
+        User user = request;
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());
-        user = userRepository.save(user);
+        userRepository.save(user);
 
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
@@ -78,7 +76,7 @@ public class AuthenticationService {
 
     }
     private void revokeAllTokenByUser(User user) {
-        List<Token> validTokens = tokenRepository.findByUserId(user.getUtilisateurId());
+        List<Token> validTokens = tokenRepository.findByUtilisateurId(user.getUtilisateurId());
         if(validTokens.isEmpty()) {
             return;
         }
@@ -94,7 +92,7 @@ public class AuthenticationService {
         token.setAccessToken(accessToken);
         token.setRefreshToken(refreshToken);
         token.setLoggedOut(false);
-        token.setUserId(user.getUtilisateurId());
+        token.setUtilisateurId(user.getUtilisateurId());
         tokenRepository.save(token);
     }
 

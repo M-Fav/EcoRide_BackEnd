@@ -21,8 +21,8 @@ public class Token {
     @Column(name = "is_logged_out")
     private boolean loggedOut;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "utilisateur_id")
+    private Integer utilisateurId;
 
     public Integer getTokenId() {
         return tokenId;
@@ -32,12 +32,12 @@ public class Token {
         this.tokenId = tokenId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUtilisateurId() {
+        return utilisateurId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUtilisateurId(Integer utilisateurId) {
+        this.utilisateurId = utilisateurId;
     }
 
     public String getAccessToken() {
