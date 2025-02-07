@@ -1,0 +1,35 @@
+package fr.ecoride.backend.enums;
+
+public enum VoitureMarqueEnum {
+        TOYOTA,
+        VOLKSWAGEN,
+        MERCEDES_BENZ,
+        BMW,
+        AUDI,
+        FORD,
+        HONDA,
+        CHEVROLET,
+        NISSAN,
+        HYUNDAI,
+        KIA,
+        PEUGEOT,
+        RENAULT,
+        TESLA,
+        FIAT,
+        JEEP,
+        VOLVO,
+        LAND_ROVER,
+        PORSCHE,
+        MAZDA,
+        SUBARU,
+        SUZUKI,
+        LEXUS,
+        FERRARI,
+        LAMBORGHINI,
+        ASTON_MARTIN,
+        BUGATTI,
+        MASERATI,
+        BENTLEY,
+        ROLLS_ROYCE;
+
+}

@@ -1,5 +1,6 @@
 package fr.ecoride.backend.model;
 
+import fr.ecoride.backend.enums.UserRoleEnum;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,13 +10,13 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "utilisateur")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "utilisateur_id")
+    private Integer utilisateurId;
 
     @Column(name = "pseudo")
     private String pseudo;
@@ -23,28 +24,98 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role", insertable = false, updatable = false)
-    private String role;
+    @Column(name = "nom")
+    private String nom;
 
-    @OneToOne
-    @JoinColumn(name = "role", referencedColumnName = "libelle")
-    private Role role_table;
+    @Column(name = "prenom")
+    private String prenom;
 
-    @OneToMany(mappedBy = "user")
-    private List<Token> tokens;
+    @Column(name = "telephone")
+    private String telephone;
 
+    @Column(name = "adresse")
+    private String adresse;
 
-    public Integer getId() {
-        return id;
+    @Column(name = "date_naissance")
+    private String dateNaissance;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "photo")
+    private byte[] photo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRoleEnum role;
+
+    public Integer getUtilisateurId() {
+        return utilisateurId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUtilisateurId(Integer utilisateurId) {
+        this.utilisateurId = utilisateurId;
     }
 
     public String getPseudo() { return pseudo; }
 
     public void setPseudo(String pseudo) { this.pseudo = pseudo; }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public String getDateNaissance() {
+        return dateNaissance;
+    }
+
+    public void setDateNaissance(String dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -73,7 +144,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        return List.of(new SimpleGrantedAuthority(role.toString()));
     }
 
     public String getPassword() {
@@ -84,27 +155,7 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
-    }
+    public UserRoleEnum getRole() { return role; }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public List<Token> getTokens() {
-        return tokens;
-    }
-
-    public void setTokens(List<Token> tokens) {
-        this.tokens = tokens;
-    }
-
-    public Role getRole_table() {
-        return role_table;
-    }
-
-    public void setRole_table(Role role_table) {
-        this.role_table = role_table;
-    }
+    public void setRole(UserRoleEnum role) { this.role = role; }
 }
