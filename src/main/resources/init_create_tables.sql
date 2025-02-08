@@ -39,33 +39,35 @@ CREATE TABLE IF NOT EXISTS voiture (
         'SUBARU', 'SUZUKI', 'LEXUS', 'FERRARI', 'LAMBORGHINI', 
         'ASTON_MARTIN', 'BUGATTI', 'MASERATI', 'BENTLEY', 'ROLLS_ROYCE'
     ) NOT NULL,
-    utilisateur_id INT,
-    CONSTRAINT fk_voiture_user FOREIGN KEY (utilisateur_id) 
+    utilisateur_id INT not NULL,
+    CONSTRAINT fk_voiture_user FOREIGN KEY (utilisateur_id)
         REFERENCES utilisateur(utilisateur_id) ON DELETE CASCADE
 );
 
 -- Création de la table "covoiturage"
 CREATE TABLE IF NOT EXISTS covoiturage (
     covoiturage_id INT AUTO_INCREMENT PRIMARY KEY,
-    date_depart DATE NOT NULL,
-    date_arrivee DATE NOT NULL,
+    date DATE NOT NULL,
     heure_depart DATE not null,
-    heure_arrivee DATE not null,
+    duree TIME not null,
     lieu_depart VARCHAR(50) NOT NULL,
     lieu_arrivee VARCHAR(50) NOT NULL,
     statut ENUM('ACTIF', 'EN_COURS', 'TERMINE') not NULL,
     nb_place INT not null,
-    prix_personne INT not null
+    prix_personne INT not null,
+    voiture_id INT not null,
+    CONSTRAINT fk_covoiturage_voiture FOREIGN KEY (voiture_id)
+        REFERENCES voiture(voiture_id) ON DELETE CASCADE
 );
 
 -- Création de la table "covoitureur"
 CREATE TABLE IF NOT EXISTS covoitureur (
 	covoitureur_id INT AUTO_INCREMENT PRIMARY KEY,
-	role ENUM('PASSAGER', 'CONDUCTEUR'),
+	role ENUM('PASSAGER', 'CONDUCTEUR') not NULL,
 	validation_covoiturage BOOLEAN DEFAULT false,
-	utilisateur_id INT,
-	covoiturage_id INT,
-    CONSTRAINT fk_covoitureur_user FOREIGN KEY (utilisateur_id) 
+	utilisateur_id INT not NULL,
+	covoiturage_id INT not NULL,
+    CONSTRAINT fk_covoitureur_user FOREIGN KEY (utilisateur_id)
         REFERENCES utilisateur(utilisateur_id) ON DELETE cascade,
     constraint fk_covoitureur_covoiturage foreign key (covoiturage_id)
     	REFERENCES covoiturage(covoiturage_id) ON DELETE cascade
@@ -74,10 +76,17 @@ CREATE TABLE IF NOT EXISTS covoitureur (
 -- Création de la table "avis" en relation vers "covoitureur"
 CREATE TABLE IF NOT EXISTS avis (
 	avis_id INT AUTO_INCREMENT PRIMARY KEY,
-	commentaire VARCHAR(50),
-	note VARCHAR(50),
+	commentaire VARCHAR(50) not NULL,
+	note VARCHAR(50) not NULL,
 	statut BOOLEAN DEFAULT false,
-	covoitureur_id INT,
-    CONSTRAINT fk_avis_covoitureur FOREIGN KEY (covoitureur_id) 
+	covoitureur_id INT not NULL,
+    CONSTRAINT fk_avis_covoitureur FOREIGN KEY (covoitureur_id)
         REFERENCES covoitureur(covoitureur_id) ON DELETE cascade
+);
+
+-- Création de la table "donnee_entreprise"
+CREATE TABLE IF NOT EXISTS donnee_entreprise (
+	donnee_entreprise_id INT AUTO_INCREMENT PRIMARY KEY,
+	libelle VARCHAR(50) not NULL,
+	valeur VARCHAR(500) not NULL
 );

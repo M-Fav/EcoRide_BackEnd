@@ -1,6 +1,7 @@
 package fr.ecoride.backend.service;
 
 
+import fr.ecoride.backend.exception.CustomException;
 import fr.ecoride.backend.model.*;
 import fr.ecoride.backend.repository.TokenRepository;
 import fr.ecoride.backend.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -58,19 +60,22 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(User request) {
+
+        User user = userRepository.findByPseudo(request.getUsername()).orElseThrow(
+                () -> new CustomException("Utilisateur non trouvé", HttpStatus.NOT_FOUND));
+
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+
+        revokeAllTokenByUser(user);
+        saveUserToken(accessToken, refreshToken, user);
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                         request.getPassword()
                 )
         );
-
-        User user = userRepository.findByPseudo(request.getUsername()).orElseThrow();
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-
-        revokeAllTokenByUser(user);
-        saveUserToken(accessToken, refreshToken, user);
 
         return new AuthenticationResponse(accessToken, refreshToken, "Connexion utilisateur réussie");
 

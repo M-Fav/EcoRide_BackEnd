@@ -1,10 +1,8 @@
 package fr.ecoride.backend.dto.voiture;
 
-import jakarta.persistence.Column;
-
 public class VoitureRequestDTO {
 
-    private Integer user_id;
+    private Integer utilisateurId;
     private String modele;
     private String immatriculation;
     private String energie;
@@ -12,12 +10,12 @@ public class VoitureRequestDTO {
     private String datePremiereImmatriculation;
     private String marque;
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUtilisateurId() {
+        return utilisateurId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUtilisateurId(Integer utilisateurId) {
+        this.utilisateurId = utilisateurId;
     }
 
     public String getModele() {

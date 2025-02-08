@@ -21,6 +21,9 @@ public class Voiture {
     private String datePremiereImmatriculation;
     @Column(name = "marque")
     private String marque;
+    @Column(name = "utilisateur_id")
+    private Integer utilisateurId;
+
 
     public String getModele() {
         return modele;
@@ -76,5 +79,13 @@ public class Voiture {
 
     public void setVoitureId(Integer voitureId) {
         this.voitureId = voitureId;
+    }
+
+    public Integer getUtilisateurId() {
+        return utilisateurId;
+    }
+
+    public void setUtilisateurId(Integer utilisateurId) {
+        this.utilisateurId = utilisateurId;
     }
 }
