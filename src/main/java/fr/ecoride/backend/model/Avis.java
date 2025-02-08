@@ -3,6 +3,7 @@ package fr.ecoride.backend.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "avis")
 public class Avis {
 
     @Id

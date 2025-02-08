@@ -13,10 +13,14 @@ public class Covoiturage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "covoiturage_id")
     private Integer covoiturageId;
+
+    @Column(name = "voiture_id")
+    private Integer voitureId;
+
     @Column(name = "date")
     private Date date;
     @Column(name = "heure_depart")
-    private Date heureDepart;
+    private LocalTime heureDepart;
     @Column(name = "duree")
     private LocalTime duree;
     @Column(name = "lieu_depart")
@@ -33,16 +37,12 @@ public class Covoiturage {
     public Covoiturage() {}
 
 
-    public Covoiturage(Integer covoiturageId, Date date, Date heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
-        this.covoiturageId = covoiturageId;
-        this.date = date;
-        this.heureDepart = heureDepart;
-        this.duree = duree;
-        this.lieuDepart = lieuDepart;
-        this.lieuArrivee = lieuArrivee;
-        this.statut = statut;
-        this.nbPlace = nbPlace;
-        this.prixPersonne = prixPersonne;
+    public Integer getVoitureId() {
+        return voitureId;
+    }
+
+    public void setVoitureId(Integer voitureId) {
+        this.voitureId = voitureId;
     }
 
     public Integer getCovoiturageId() {
@@ -69,11 +69,11 @@ public class Covoiturage {
         this.date = date;
     }
 
-    public Date getHeureDepart() {
+    public LocalTime getHeureDepart() {
         return heureDepart;
     }
 
-    public void setHeureDepart(Date heureDepart) {
+    public void setHeureDepart(LocalTime heureDepart) {
         this.heureDepart = heureDepart;
     }
 

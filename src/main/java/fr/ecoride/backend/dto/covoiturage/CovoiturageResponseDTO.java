@@ -16,7 +16,7 @@ public class CovoiturageResponseDTO {
     @JsonProperty("date")
     private Date date;
     @JsonProperty("heure_depart")
-    private Date heureDepart;
+    private LocalTime heureDepart;
     @JsonProperty( "duree")
     private LocalTime duree;
     @JsonProperty("lieu_depart")
@@ -30,7 +30,7 @@ public class CovoiturageResponseDTO {
     @JsonProperty("prix_personne")
     private float prixPersonne;
 
-    public CovoiturageResponseDTO(Integer covoiturageId, Date date, Date heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+    public CovoiturageResponseDTO(Integer covoiturageId, Date date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
         this.covoiturageId = covoiturageId;
         this.date = date;
         this.heureDepart = heureDepart;
@@ -58,11 +58,11 @@ public class CovoiturageResponseDTO {
         this.date = date;
     }
 
-    public Date getHeureDepart() {
+    public LocalTime getHeureDepart() {
         return heureDepart;
     }
 
-    public void setHeureDepart(Date heureDepart) {
+    public void setHeureDepart(LocalTime heureDepart) {
         this.heureDepart = heureDepart;
     }
 

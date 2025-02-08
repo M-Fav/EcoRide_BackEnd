@@ -23,9 +23,11 @@ public class CovoiturageService {
         return CovoiturageMapper.INSTANCE.toListCovoiturageResponseDTO(covoiturageRepository.findByLieuDepartAndLieuArrivee(lieuDepart, lieuArrivee));
     }
 
-    public void createCovoiturage(CovoiturageRequestDTO covoiturageRequestDTO) {
+    public Integer createCovoiturage(CovoiturageRequestDTO covoiturageRequestDTO) {
 
-        covoiturageRepository.save(CovoiturageMapper.INSTANCE.toCovoiturage(covoiturageRequestDTO));
+        Covoiturage covoiturage = covoiturageRepository.save(CovoiturageMapper.INSTANCE.toCovoiturage(covoiturageRequestDTO));
+        //On fait le save et on return l'id du covoiturage
+        return covoiturage.getCovoiturageId();
     }
 
 

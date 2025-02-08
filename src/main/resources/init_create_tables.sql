@@ -34,9 +34,9 @@ CREATE TABLE IF NOT EXISTS voiture (
     marque ENUM(
         'TOYOTA', 'VOLKSWAGEN', 'MERCEDES_BENZ', 'BMW', 'AUDI', 
         'FORD', 'HONDA', 'CHEVROLET', 'NISSAN', 'HYUNDAI',
-        'KIA', 'PEUGEOT', 'RENAULT', 'TESLA', 'FIAT', 
+        'KIA', 'PEUGEOT', 'RENAULT', 'TESLA', 'FIAT',
         'JEEP', 'VOLVO', 'LAND_ROVER', 'PORSCHE', 'MAZDA',
-        'SUBARU', 'SUZUKI', 'LEXUS', 'FERRARI', 'LAMBORGHINI', 
+        'SUBARU', 'SUZUKI', 'LEXUS', 'FERRARI', 'LAMBORGHINI',
         'ASTON_MARTIN', 'BUGATTI', 'MASERATI', 'BENTLEY', 'ROLLS_ROYCE'
     ) NOT NULL,
     utilisateur_id INT not NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS voiture (
 CREATE TABLE IF NOT EXISTS covoiturage (
     covoiturage_id INT AUTO_INCREMENT PRIMARY KEY,
     date DATE NOT NULL,
-    heure_depart DATE not null,
+    heure_depart TIME not null,
     duree TIME not null,
     lieu_depart VARCHAR(50) NOT NULL,
     lieu_arrivee VARCHAR(50) NOT NULL,
@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS covoiturage (
     nb_place INT not null,
     prix_personne INT not null,
     voiture_id INT not null,
-    CONSTRAINT fk_covoiturage_voiture FOREIGN KEY (voiture_id)
-        REFERENCES voiture(voiture_id) ON DELETE CASCADE
+     CONSTRAINT fk_covoiturage_voiture FOREIGN KEY (voiture_id)
+        REFERENCES voiture(voiture_id) ON DELETE cascade
 );
 
 -- Création de la table "covoitureur"
@@ -82,11 +82,4 @@ CREATE TABLE IF NOT EXISTS avis (
 	covoitureur_id INT not NULL,
     CONSTRAINT fk_avis_covoitureur FOREIGN KEY (covoitureur_id)
         REFERENCES covoitureur(covoitureur_id) ON DELETE cascade
-);
-
--- Création de la table "donnee_entreprise"
-CREATE TABLE IF NOT EXISTS donnee_entreprise (
-	donnee_entreprise_id INT AUTO_INCREMENT PRIMARY KEY,
-	libelle VARCHAR(50) not NULL,
-	valeur VARCHAR(500) not NULL
 );
