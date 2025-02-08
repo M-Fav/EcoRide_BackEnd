@@ -8,7 +8,7 @@ public class DonneesEntreprise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "donnee_entreprise_id")
     private Integer id;
 
     @Column(name = "libelle")
