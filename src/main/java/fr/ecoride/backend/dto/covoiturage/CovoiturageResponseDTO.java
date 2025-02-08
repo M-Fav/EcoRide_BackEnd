@@ -1,39 +1,36 @@
-package fr.ecoride.backend.model;
+package fr.ecoride.backend.dto.covoiturage;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.time.LocalTime;
 import java.util.Date;
 
-@Entity
-@Table(name = "covoiturage")
-public class Covoiturage {
+public class CovoiturageResponseDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "covoiturage_id")
+    @JsonProperty("covoiturage_id")
     private Integer covoiturageId;
-    @Column(name = "date")
+    @JsonProperty("date")
     private Date date;
-    @Column(name = "heure_depart")
+    @JsonProperty("heure_depart")
     private Date heureDepart;
-    @Column(name = "duree")
+    @JsonProperty( "duree")
     private LocalTime duree;
-    @Column(name = "lieu_depart")
+    @JsonProperty("lieu_depart")
     private String lieuDepart;
-    @Column(name = "lieu_arrivee")
+    @JsonProperty("lieu_arrivee")
     private String lieuArrivee;
-    @Column(name = "statut")
+    @JsonProperty("statut")
     private String statut;
-    @Column(name = "nb_place")
+    @JsonProperty("nb_place")
     private int nbPlace;
-    @Column(name = "prix_personne")
+    @JsonProperty("prix_personne")
     private float prixPersonne;
 
-    public Covoiturage() {}
-
-
-    public Covoiturage(Integer covoiturageId, Date date, Date heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+    public CovoiturageResponseDTO(Integer covoiturageId, Date date, Date heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
         this.covoiturageId = covoiturageId;
         this.date = date;
         this.heureDepart = heureDepart;
@@ -53,14 +50,6 @@ public class Covoiturage {
         this.covoiturageId = covoiturageId;
     }
 
-    public LocalTime getDuree() {
-        return duree;
-    }
-
-    public void setDuree(LocalTime duree) {
-        this.duree = duree;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -75,6 +64,14 @@ public class Covoiturage {
 
     public void setHeureDepart(Date heureDepart) {
         this.heureDepart = heureDepart;
+    }
+
+    public LocalTime getDuree() {
+        return duree;
+    }
+
+    public void setDuree(LocalTime duree) {
+        this.duree = duree;
     }
 
     public String getLieuDepart() {

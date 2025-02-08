@@ -1,13 +1,14 @@
 package fr.ecoride.backend.service;
 
+import fr.ecoride.backend.dto.covoiturage.CovoiturageRequestDTO;
+import fr.ecoride.backend.mapper.CovoiturageMapper;
 import fr.ecoride.backend.model.Covoiturage;
-import fr.ecoride.backend.model.CovoiturageResponse;
+import fr.ecoride.backend.dto.covoiturage.CovoiturageResponseDTO;
 import fr.ecoride.backend.repository.CovoiturageRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CovoiturageService {
@@ -18,15 +19,14 @@ public class CovoiturageService {
         this.covoiturageRepository = covoiturageRepository;
     }
 
-    public List<CovoiturageResponse> findCovoiturages(String lieuDepart, String lieuArrivee) {
-
-        List<CovoiturageResponse> listeCovoiturageResponse = new ArrayList<CovoiturageResponse>();
-        List<Covoiturage> listeCovoiturage = covoiturageRepository.findByLieuDepartAndLieuArrivee(lieuDepart, lieuArrivee);
-        for (Covoiturage covoiturage : listeCovoiturage) {
-            CovoiturageResponse covoiturageResponse =
-                    new CovoiturageResponse(covoiturage.getLieuDepart(), covoiturage.getLieuArrivee(), covoiturage.getNbPlace());
-            listeCovoiturageResponse.add(covoiturageResponse);
-        }
-        return listeCovoiturageResponse;
+    public List<CovoiturageResponseDTO> findCovoiturages(String lieuDepart, String lieuArrivee) {
+        return CovoiturageMapper.INSTANCE.toListCovoiturageResponseDTO(covoiturageRepository.findByLieuDepartAndLieuArrivee(lieuDepart, lieuArrivee));
     }
+
+    public void createCovoiturage(CovoiturageRequestDTO covoiturageRequestDTO) {
+
+        covoiturageRepository.save(CovoiturageMapper.INSTANCE.toCovoiturage(covoiturageRequestDTO));
+    }
+
+
 }
