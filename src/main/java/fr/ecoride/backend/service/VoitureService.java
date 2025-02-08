@@ -3,6 +3,7 @@ package fr.ecoride.backend.service;
 import fr.ecoride.backend.dto.voiture.VoitureRequestDTO;
 import fr.ecoride.backend.dto.voiture.VoitureResponseDTO;
 import fr.ecoride.backend.mapper.VoitureMapper;
+import fr.ecoride.backend.model.Voiture;
 import fr.ecoride.backend.repository.VoitureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
