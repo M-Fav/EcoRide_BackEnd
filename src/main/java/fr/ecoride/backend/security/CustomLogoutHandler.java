@@ -1,4 +1,4 @@
-package fr.ecoride.backend.config;
+package fr.ecoride.backend.security;
 
 import fr.ecoride.backend.model.Token;
 import fr.ecoride.backend.repository.TokenRepository;

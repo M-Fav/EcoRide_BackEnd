@@ -1,12 +1,13 @@
-package fr.ecoride.backend.config;
+package fr.ecoride.backend.security;
 
 
-import fr.ecoride.backend.filter.JwtAuthenticationFilter;
+import fr.ecoride.backend.enums.UserRoleEnum;
+import fr.ecoride.backend.security.exception.CustomAccessDeniedHandler;
+import fr.ecoride.backend.security.exception.CustomAuthenticationEntryPoint;
+import fr.ecoride.backend.security.filter.JwtAuthenticationFilter;
 import fr.ecoride.backend.service.UserDetailsServiceImp;
-import fr.ecoride.backend.utils.Constantes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -43,33 +43,33 @@ public class SecurityConfig {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        req->req.requestMatchers(
+                .authorizeHttpRequests(req->req
+                        .requestMatchers(
                                 "/login/**",
-                                        "/register/**",
-                                        "/refresh_token/**",
-                                        "/donneesEntreprise/**",
-                                        "/covoiturage/covoiturages")
-                                .permitAll()
-                                .requestMatchers("/admin_only/**").hasAuthority(String.valueOf(Constantes.ADMIN))
-                                .anyRequest()
-                                .authenticated()
-                ).userDetailsService(userDetailsServiceImp)
+                                "/register/**",
+                                "/refresh_token/**",
+                                "/donneesEntreprise/**" ).permitAll()
+                        .requestMatchers(
+                                "/voitures/listeVoiture" ).hasAuthority(String.valueOf(UserRoleEnum.UTILISATEUR.toString()))
+                        .anyRequest().authenticated()
+                )
+                .userDetailsService(userDetailsServiceImp)
                 .sessionManagement(session->session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(
-                        e->e.accessDeniedHandler(
-                                        (request, response, accessDeniedException)->response.setStatus(403)
-                                )
-                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .exceptionHandling(e->e
+                        // Gestion personnalisée du refus d'accès (403)
+                        .accessDeniedHandler(new CustomAccessDeniedHandler())
+                        // Gestion personnalisée de l'authentification (401)
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                )
                 .logout(l->l
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()
                         ))
                 .build();
-
     }
 
     @Bean
