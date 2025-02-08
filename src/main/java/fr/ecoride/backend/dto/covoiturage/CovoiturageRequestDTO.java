@@ -6,27 +6,20 @@ import java.time.LocalTime;
 import java.util.Date;
 
 public class CovoiturageRequestDTO {
-    @JsonProperty("covoiturage_id")
-    private Integer covoiturageId;
-    @JsonProperty("date")
+    private Integer voitureId;
+    private Integer utilisateurId;
     private Date date;
-    @JsonProperty("heure_depart")
-    private Date heureDepart;
-    @JsonProperty( "duree")
+    private LocalTime heureDepart;
     private LocalTime duree;
-    @JsonProperty("lieu_depart")
     private String lieuDepart;
-    @JsonProperty("lieu_arrivee")
     private String lieuArrivee;
-    @JsonProperty("statut")
     private String statut;
-    @JsonProperty("nb_place")
     private int nbPlace;
-    @JsonProperty("prix_personne")
     private float prixPersonne;
 
-    public CovoiturageRequestDTO(Integer covoiturageId, Date date, Date heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
-        this.covoiturageId = covoiturageId;
+    public CovoiturageRequestDTO(Integer voitureId, Integer utilisateurId, Date date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+        this.voitureId = voitureId;
+        this.utilisateurId = utilisateurId;
         this.date = date;
         this.heureDepart = heureDepart;
         this.duree = duree;
@@ -37,12 +30,20 @@ public class CovoiturageRequestDTO {
         this.prixPersonne = prixPersonne;
     }
 
-    public Integer getCovoiturageId() {
-        return covoiturageId;
+    public Integer getVoitureId() {
+        return voitureId;
     }
 
-    public void setCovoiturageId(Integer covoiturageId) {
-        this.covoiturageId = covoiturageId;
+    public void setVoitureId(Integer voitureId) {
+        this.voitureId = voitureId;
+    }
+
+    public Integer getUtilisateurId() {
+        return utilisateurId;
+    }
+
+    public void setUtilisateurId(Integer utilisateurId) {
+        this.utilisateurId = utilisateurId;
     }
 
     public Date getDate() {
@@ -53,11 +54,11 @@ public class CovoiturageRequestDTO {
         this.date = date;
     }
 
-    public Date getHeureDepart() {
+    public LocalTime getHeureDepart() {
         return heureDepart;
     }
 
-    public void setHeureDepart(Date heureDepart) {
+    public void setHeureDepart(LocalTime heureDepart) {
         this.heureDepart = heureDepart;
     }
 
