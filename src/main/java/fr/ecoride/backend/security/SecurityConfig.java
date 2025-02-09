@@ -49,8 +49,10 @@ public class SecurityConfig {
                                 "/register/**",
                                 "/refresh_token/**",
                                 "/donneesEntreprise/**").permitAll()
-                        //.requestMatchers(
-                               // "/voitures/listeVoiture").hasAuthority(String.valueOf(UserRoleEnum.UTILISATEUR.toString()))
+                        .requestMatchers(
+                               "/voitures/listeVoiture").hasAuthority(String.valueOf(UserRoleEnum.UTILISATEUR.toString()))
+                        .requestMatchers(
+                                "avis/findAvisByStatut").hasAuthority(String.valueOf(UserRoleEnum.EMPLOYE.toString()))
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsServiceImp)
