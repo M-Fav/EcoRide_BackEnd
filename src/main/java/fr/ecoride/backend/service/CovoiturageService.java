@@ -2,6 +2,7 @@ package fr.ecoride.backend.service;
 
 import fr.ecoride.backend.controller.AuthenticationController;
 import fr.ecoride.backend.dto.covoiturage.CovoiturageRequestDTO;
+import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 import fr.ecoride.backend.mapper.CovoiturageMapper;
 import fr.ecoride.backend.model.Covoiturage;
 import fr.ecoride.backend.dto.covoiturage.CovoiturageResponseDTO;
@@ -11,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +25,7 @@ public class CovoiturageService {
     private static String CREATE_COVOITURAGE = "createCovoiturage";
     private static String FIND_COVOITURAGES = "findCovoiturages";
     private static String DELETE_COVOITURAGE = "deleteCovoiturage";
+    private static String UPDATE_STATUT_COVOITURAGE = "updateStatutCovoiturage";
 
     public CovoiturageService(CovoiturageRepository covoiturageRepository) {
         this.covoiturageRepository = covoiturageRepository;
@@ -94,5 +95,21 @@ public class CovoiturageService {
         covoiturageRepository.deleteById(covoiturageId);
 
         logger.debug(DELETE_COVOITURAGE + Constantes.LOG_FIN);
+    }
+
+    /**
+     * Permet de changer le statut du covoiturage
+     * @param covoiturageId
+     * @param statut
+     */
+    public void updateStatutCovoiturage(Integer covoiturageId, CovoiturageStatutEnum statut) {
+        logger.debug(UPDATE_STATUT_COVOITURAGE + Constantes.LOG_DEBUT);
+
+        Covoiturage covoiturage = covoiturageRepository.findByCovoiturageId(covoiturageId);
+
+        covoiturage.setStatut(statut);
+        covoiturageRepository.save(covoiturage);
+
+        logger.debug(UPDATE_STATUT_COVOITURAGE + Constantes.LOG_FIN);
     }
 }

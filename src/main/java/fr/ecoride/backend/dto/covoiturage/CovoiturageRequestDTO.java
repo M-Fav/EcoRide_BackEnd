@@ -1,5 +1,7 @@
 package fr.ecoride.backend.dto.covoiturage;
 
+import fr.ecoride.backend.enums.CovoiturageStatutEnum;
+
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -13,11 +15,11 @@ public class CovoiturageRequestDTO {
     private LocalTime duree;
     private String lieuDepart;
     private String lieuArrivee;
-    private String statut;
+    private CovoiturageStatutEnum statut;
     private int nbPlace;
     private float prixPersonne;
 
-    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, Date date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, Date date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, CovoiturageStatutEnum statut, int nbPlace, float prixPersonne) {
         this.covoiturageId = covoiturageId;
         this.voitureId = voitureId;
         this.utilisateurId = utilisateurId;
@@ -91,11 +93,11 @@ public class CovoiturageRequestDTO {
         this.lieuArrivee = lieuArrivee;
     }
 
-    public String getStatut() {
+    public CovoiturageStatutEnum getStatut() {
         return statut;
     }
 
-    public void setStatut(String statut) {
+    public void setStatut(CovoiturageStatutEnum statut) {
         this.statut = statut;
     }
 

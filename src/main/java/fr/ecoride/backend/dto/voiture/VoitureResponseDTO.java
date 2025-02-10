@@ -2,7 +2,7 @@ package fr.ecoride.backend.dto.voiture;
 
 public class VoitureResponseDTO {
 
-    private Integer user_id;
+    private Integer voitureId;
     private String modele;
     private String immatriculation;
     private String energie;
@@ -10,8 +10,8 @@ public class VoitureResponseDTO {
     private String datePremiereImmatriculation;
     private String marque;
 
-    public VoitureResponseDTO(Integer user_id, String modele, String immatriculation, String energie, String couleur, String datePremiereImmatriculation, String marque) {
-        this.user_id = user_id;
+    public VoitureResponseDTO(Integer voitureId, String modele, String immatriculation, String energie, String couleur, String datePremiereImmatriculation, String marque) {
+        this.voitureId = voitureId;
         this.modele = modele;
         this.immatriculation = immatriculation;
         this.energie = energie;
@@ -20,12 +20,12 @@ public class VoitureResponseDTO {
         this.marque = marque;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getVoitureId() {
+        return voitureId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setVoitureId(Integer voitureId) {
+        this.voitureId = voitureId;
     }
 
     public String getModele() {
