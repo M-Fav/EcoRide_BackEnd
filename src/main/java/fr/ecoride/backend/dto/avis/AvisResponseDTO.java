@@ -1,33 +1,19 @@
-package fr.ecoride.backend.model;
+package fr.ecoride.backend.dto.avis;
 
-import jakarta.persistence.*;
+public class AvisResponseDTO {
 
-@Entity
-@Table(name = "avis")
-public class Avis {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "avis_id")
     private Integer avisId;
-    @Column(name = "commentaire")
     private String commentaire;
-    @Column(name = "note")
     private String note;
-    @Column(name = "statut")
     private boolean statut;
+    private Integer covoitureurId;
 
-    @Column(name = "covoitureur_id")
-    private String covoitureurId;
-
-    public Avis() {}
-
-    public long getAvisId() {
-        return avisId;
-    }
-
-    public void setAvisId(Integer avisId) {
+    public AvisResponseDTO(Integer avisId, String commentaire, String note, boolean statut, Integer covoitureurId) {
         this.avisId = avisId;
+        this.commentaire = commentaire;
+        this.note = note;
+        this.statut = statut;
+        this.covoitureurId = covoitureurId;
     }
 
     public String getCommentaire() {
@@ -54,11 +40,19 @@ public class Avis {
         this.statut = statut;
     }
 
-    public String getCovoitureurId() {
+    public Integer getCovoitureurId() {
         return covoitureurId;
     }
 
-    public void setCovoitureurId(String covoitureurId) {
+    public void setCovoitureurId(Integer covoitureurId) {
         this.covoitureurId = covoitureurId;
+    }
+
+    public Integer getAvisId() {
+        return avisId;
+    }
+
+    public void setAvisId(Integer avisId) {
+        this.avisId = avisId;
     }
 }
