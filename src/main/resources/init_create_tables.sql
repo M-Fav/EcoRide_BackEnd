@@ -84,3 +84,10 @@ CREATE TABLE IF NOT EXISTS avis (
     CONSTRAINT fk_avis_covoitureur FOREIGN KEY (covoitureur_id)
         REFERENCES covoitureur(covoitureur_id) ON DELETE cascade
 );
+
+-- Création de la table "donnee_entreprise"
+CREATE TABLE IF NOT EXISTS donnee_entreprise (
+	donnee_entreprise_id INT AUTO_INCREMENT PRIMARY KEY,
+	libelle VARCHAR(50) not NULL,
+	valeur VARCHAR(500) not NULL
+);

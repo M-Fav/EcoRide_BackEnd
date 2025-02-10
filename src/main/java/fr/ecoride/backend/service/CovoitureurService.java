@@ -1,23 +1,20 @@
 package fr.ecoride.backend.service;
 
-import fr.ecoride.backend.controller.AuthenticationController;
 import fr.ecoride.backend.dto.covoitureur.CovoitureurRequestDTO;
 import fr.ecoride.backend.email.EmailService;
 import fr.ecoride.backend.enums.CovoitureurRoleEnum;
-import fr.ecoride.backend.exception.CustomException;
 import fr.ecoride.backend.mapper.CovoitureurMapper;
 import fr.ecoride.backend.model.Covoiturage;
 import fr.ecoride.backend.model.Covoitureur;
 import fr.ecoride.backend.repository.CovoiturageRepository;
 import fr.ecoride.backend.repository.CovoitureurRepository;
+import fr.ecoride.backend.repository.UserRepository;
 import fr.ecoride.backend.utils.Constantes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CovoitureurService {
@@ -26,17 +23,18 @@ public class CovoitureurService {
     private final CovoitureurRepository covoitureurRepository;
     private final CovoiturageRepository covoiturageRepository;
     private final UserDetailsServiceImp userDetailsServiceImp;
+    private final UserRepository userRepository;
     private final EmailService emailService;
 
     private static String CREATE_COVOITUREUR = "createCovoitureur";
     private static String DELETE_COVOITUREUR = "deleteCovoitureur";
     private static String GET_COVOITUREURS_OF_COVOITURAGE = "getCovoitureursOfCovoiturage";
-    private static String SEND_EMAIL_SUPPRESSION_COVOITURAGE = "sendEmailSuppressionCovoiturage";
 
-    public CovoitureurService(CovoitureurRepository covoitureurRepository, CovoiturageRepository covoiturageRepository, UserDetailsServiceImp userDetailsServiceImp, EmailService emailService) {
+    public CovoitureurService(CovoitureurRepository covoitureurRepository, CovoiturageRepository covoiturageRepository, UserDetailsServiceImp userDetailsServiceImp, UserRepository userRepository, EmailService emailService) {
         this.covoitureurRepository = covoitureurRepository;
         this.covoiturageRepository = covoiturageRepository;
         this.userDetailsServiceImp = userDetailsServiceImp;
+        this.userRepository = userRepository;
         this.emailService = emailService;
     }
 
@@ -48,14 +46,14 @@ public class CovoitureurService {
     public void createCovoitureur(CovoitureurRequestDTO covoitureurRequestDTO) {
         logger.debug(CREATE_COVOITUREUR + Constantes.LOG_DEBUT);
 
-        //On créer le covoiturer
-        covoitureurRepository.save(CovoitureurMapper.INSTANCE.toCovoitureur(covoitureurRequestDTO));
-
         //Si on créer un PASSAGER alors on soustrait le prix du covoiturage à ses crédits
         if(covoitureurRequestDTO.getRole().equals(CovoitureurRoleEnum.PASSAGER)){
             float prixCovoit = covoiturageRepository.findByCovoiturageId(covoitureurRequestDTO.getCovoiturageId()).getPrixPersonne();
             userDetailsServiceImp.updateCredits(covoitureurRequestDTO.getUtilisateurId(), prixCovoit, false);
         }
+
+        //On créer le covoitureur
+        covoitureurRepository.save(CovoitureurMapper.INSTANCE.toCovoitureur(covoitureurRequestDTO));
 
         logger.debug(CREATE_COVOITUREUR + Constantes.LOG_FIN);
     }
@@ -77,11 +75,13 @@ public class CovoitureurService {
             //On recrédite le prix du covoiturage
             userDetailsServiceImp.updateCredits(covoitureur.getUtilisateurId(), prixCovoiturage, true);
             //On envoie un mail pour informer l'utilisateur
-            sendEmailSuppressionCovoiturage(covoiturage, covoitureur);
+            String email = userRepository.findByUtilisateurId(covoitureur.getUtilisateurId()).getEmail();
+            emailService.sendEmailSuppressionCovoiturage(covoiturage, covoitureur, email);
         }
 
         logger.debug(DELETE_COVOITUREUR + Constantes.LOG_FIN);
     }
+
 
     /**
      * Permet de récupérer la liste des covoitureur liés à un covoiturage
@@ -100,34 +100,12 @@ public class CovoitureurService {
     }
 
     /**
-     * Permet d'envoyer un mail d'information
-     * de l'annulation d'un covoiturage
-     *
+     * Envoi du mail de validation du Covoiturage au Covoitureur
      * @param covoiturage
+     * @param covoitureur
      */
-    public void sendEmailSuppressionCovoiturage(Covoiturage covoiturage, Covoitureur covoitureur){
-        logger.debug(SEND_EMAIL_SUPPRESSION_COVOITURAGE + Constantes.LOG_DEBUT);
-
-        //Envoie du mail
-        try {
-            // Variables dynamiques à injecter dans le template
-            Map<String, Object> variables = Map.of(
-                    "villeDepart", covoiturage.getLieuDepart(),
-                    "villeArrivee", covoiturage.getLieuArrivee(),
-                    "dateCovoiturage", covoiturage.getDate().toString(),
-                    "heureCovoiturage", covoiturage.getHeureDepart().toString()
-            );
-
-            // Appel à la méthode d'envoi d'email
-            emailService.envoyerEmail("alexandren.blais@gmail.com",
-                    "Annulation de votre covoiturage",
-                    "mail_covoiturage_annule",
-                    variables);
-
-        } catch (Exception e) {
-            throw new CustomException( "Erreur lors de l'envoi de l'email : " + e.getMessage(), HttpStatus.FORBIDDEN);
-        }
-
-        logger.debug(SEND_EMAIL_SUPPRESSION_COVOITURAGE + Constantes.LOG_FIN);
+    public void sendEmailValidationCovoitureur(Covoiturage covoiturage,Covoitureur covoitureur) {
+        String email = userRepository.findByUtilisateurId(covoitureur.getUtilisateurId()).getEmail();
+        emailService.sendEmailValidationCovoiturage(covoiturage, covoitureur, email);
     }
 }

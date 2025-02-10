@@ -1,5 +1,6 @@
 package fr.ecoride.backend.model;
 
+import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
@@ -27,8 +28,9 @@ public class Covoiturage {
     private String lieuDepart;
     @Column(name = "lieu_arrivee")
     private String lieuArrivee;
+    @Enumerated(EnumType.STRING)
     @Column(name = "statut")
-    private String statut;
+    private CovoiturageStatutEnum statut;
     @Column(name = "nb_place")
     private int nbPlace;
     @Column(name = "prix_personne")
@@ -93,11 +95,11 @@ public class Covoiturage {
         this.lieuArrivee = lieuArrivee;
     }
 
-    public String getStatut() {
+    public CovoiturageStatutEnum getStatut() {
         return statut;
     }
 
-    public void setStatut(String statut) {
+    public void setStatut(CovoiturageStatutEnum statut) {
         this.statut = statut;
     }
 

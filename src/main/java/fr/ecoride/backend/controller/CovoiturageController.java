@@ -3,6 +3,8 @@ package fr.ecoride.backend.controller;
 import fr.ecoride.backend.dto.covoiturage.CovoiturageRequestDTO;
 import fr.ecoride.backend.dto.covoiturage.CovoiturageResponseDTO;
 import fr.ecoride.backend.dto.covoitureur.CovoitureurRequestDTO;
+import fr.ecoride.backend.email.EmailService;
+import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 import fr.ecoride.backend.enums.CovoitureurRoleEnum;
 import fr.ecoride.backend.model.Covoiturage;
 import fr.ecoride.backend.model.Covoitureur;
@@ -27,10 +29,14 @@ public class CovoiturageController {
     private CovoiturageService covoiturageService;
     @Autowired
     private CovoitureurService covoitureurService;
+    @Autowired
+    private EmailService emailService;
 
     private static String DELETE_COVOITURAGE = "deleteCovoiturage";
     private static String FIND_COVOITURAGE = "findCovoiturages";
     private static String CREATE_COVOITURAGE = "createCovoiturage";
+    private static String START_COVOITURAGE = "startCovoiturage";
+    private static String TERMINATE_COVOITURAGE = "terminateCovoiturage";
 
     @GetMapping("/covoiturages")
     public ResponseEntity findCovoiturages(@RequestBody Covoiturage request) {
@@ -58,6 +64,8 @@ public class CovoiturageController {
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_FIN);
     }
 
+
+
     @PostMapping("/deleteCovoiturage")
     public void deleteCovoiturage(@RequestBody CovoiturageRequestDTO covoiturageRequestDTO) {
         logger.debug(DELETE_COVOITURAGE + Constantes.LOG_DEBUT);
@@ -77,5 +85,41 @@ public class CovoiturageController {
         covoiturageService.deleteCovoiturage(covoiturageRequestDTO.getCovoiturageId());
 
         logger.debug(DELETE_COVOITURAGE + Constantes.LOG_FIN);
+    }
+
+
+    @PutMapping("/startCovoiturage")
+    public void startCovoiturage(@RequestBody CovoiturageRequestDTO covoiturageRequestDTO) {
+        logger.debug(START_COVOITURAGE + Constantes.LOG_DEBUT);
+
+        //On appelle le service startCovoiturage pour démarrer le covoiturage
+        covoiturageService.updateStatutCovoiturage(covoiturageRequestDTO.getCovoiturageId(),
+                CovoiturageStatutEnum.EN_COURS);
+
+        logger.debug(START_COVOITURAGE + Constantes.LOG_FIN);
+    }
+
+    @PutMapping("/terminateCovoiturage")
+    public void terminateCovoiturage(@RequestBody CovoiturageRequestDTO covoiturageRequestDTO) {
+        logger.debug(TERMINATE_COVOITURAGE + Constantes.LOG_DEBUT);
+
+        //On passe le statut du covoiturage a terminé
+        covoiturageService.updateStatutCovoiturage(covoiturageRequestDTO.getCovoiturageId(),
+                CovoiturageStatutEnum.TERMINE);
+
+        //On récupère les passagers du covoiturage
+        List<Covoitureur> listeCovoitureur = covoitureurService.getCovoitureursOfCovoiturage(covoiturageRequestDTO.getCovoiturageId());
+
+        //On récupère le covoiturage
+        Covoiturage covoiturage = covoiturageService.getCovoiturage(covoiturageRequestDTO.getCovoiturageId());
+
+        //On envoi le mail de validation de covoiturage aux covoitureur passagés
+        for(Covoitureur covoitureur: listeCovoitureur) {
+            if (covoitureur.getRole().equals(CovoitureurRoleEnum.PASSAGER)) {
+                covoitureurService.sendEmailValidationCovoitureur(covoiturage, covoitureur);
+            }
+        }
+
+        logger.debug(TERMINATE_COVOITURAGE + Constantes.LOG_FIN);
     }
 }
