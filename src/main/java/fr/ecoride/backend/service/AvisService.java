@@ -24,5 +24,6 @@ public class AvisService {
     //Trouver les avis en statut false pour l'employé
     public List<AvisResponseDTO> findAvisByStatut(boolean statut) {
         return AvisMapper.INSTANCE.toListAvisResponseDTO(avisRepository.findAvisByStatut(statut));
+
     }
 }
