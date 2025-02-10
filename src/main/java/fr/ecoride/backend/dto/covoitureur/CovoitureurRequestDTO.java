@@ -1,23 +1,30 @@
 package fr.ecoride.backend.dto.covoitureur;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.ecoride.backend.enums.CovoitureurRoleEnum;
 
 public class CovoitureurRequestDTO {
 
-    @JsonProperty("role")
+    private Integer covoitureurId;
+
     private CovoitureurRoleEnum role;
 
-    @JsonProperty("utilisateur_id")
     private Integer utilisateurId;
 
-    @JsonProperty("covoiturage_id")
     private Integer covoiturageId;
 
-    public CovoitureurRequestDTO(CovoitureurRoleEnum role, Integer utilisateurId, Integer covoiturageId) {
+    public CovoitureurRequestDTO(Integer covoitureurId, CovoitureurRoleEnum role, Integer utilisateurId, Integer covoiturageId) {
+        this.covoitureurId = covoitureurId;
         this.role = role;
         this.utilisateurId = utilisateurId;
         this.covoiturageId = covoiturageId;
+    }
+
+    public Integer getCovoitureurId() {
+        return covoitureurId;
+    }
+
+    public void setCovoitureurId(Integer covoitureurId) {
+        this.covoitureurId = covoitureurId;
     }
 
     public CovoitureurRoleEnum getRole() {

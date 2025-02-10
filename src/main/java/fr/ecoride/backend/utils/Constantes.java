@@ -2,7 +2,9 @@ package fr.ecoride.backend.utils;
 
 public class Constantes {
 
-    public static String USER = "USER";
-    public static String ADMIN = "ADMIN";
-    public static String EMPLOYE = "EMPLOYE";
+    public static Integer CREDIT_INSCRIPTION = 20;
+
+    /** Constantes pour les logs */
+    public static String LOG_DEBUT = " - DEBUT";
+    public static String LOG_FIN = " - FIN";
 }

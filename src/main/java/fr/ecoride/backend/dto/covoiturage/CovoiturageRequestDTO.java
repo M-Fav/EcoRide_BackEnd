@@ -1,11 +1,11 @@
 package fr.ecoride.backend.dto.covoiturage;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.LocalTime;
 import java.util.Date;
 
 public class CovoiturageRequestDTO {
+
+    private Integer covoiturageId;
     private Integer voitureId;
     private Integer utilisateurId;
     private Date date;
@@ -17,7 +17,8 @@ public class CovoiturageRequestDTO {
     private int nbPlace;
     private float prixPersonne;
 
-    public CovoiturageRequestDTO(Integer voitureId, Integer utilisateurId, Date date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, Date date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+        this.covoiturageId = covoiturageId;
         this.voitureId = voitureId;
         this.utilisateurId = utilisateurId;
         this.date = date;
@@ -29,6 +30,10 @@ public class CovoiturageRequestDTO {
         this.nbPlace = nbPlace;
         this.prixPersonne = prixPersonne;
     }
+
+    public Integer getCovoiturageId() { return covoiturageId; }
+
+    public void setCovoiturageId(Integer covoiturageId) { this.covoiturageId = covoiturageId; }
 
     public Integer getVoitureId() {
         return voitureId;
