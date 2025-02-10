@@ -8,10 +8,9 @@ CREATE TABLE IF NOT EXISTS utilisateur (
     nom  VARCHAR(50) NOT null,
     prenom VARCHAR(50) NOT null,
     date_naissance DATE NOT null,
-    adresse VARCHAR(50) NOT null,
+    adresse VARCHAR(50) not null,
     photo BLOB,
-    telephone VARCHAR(10) NOT null,
-    credit FLOAT NOT null
+    telephone VARCHAR(10) not null
 );
 
 -- Création de la table "token" avec relation vers "utilisateur"
@@ -35,40 +34,38 @@ CREATE TABLE IF NOT EXISTS voiture (
     marque ENUM(
         'TOYOTA', 'VOLKSWAGEN', 'MERCEDES_BENZ', 'BMW', 'AUDI', 
         'FORD', 'HONDA', 'CHEVROLET', 'NISSAN', 'HYUNDAI',
-        'KIA', 'PEUGEOT', 'RENAULT', 'TESLA', 'FIAT',
+        'KIA', 'PEUGEOT', 'RENAULT', 'TESLA', 'FIAT', 
         'JEEP', 'VOLVO', 'LAND_ROVER', 'PORSCHE', 'MAZDA',
-        'SUBARU', 'SUZUKI', 'LEXUS', 'FERRARI', 'LAMBORGHINI',
+        'SUBARU', 'SUZUKI', 'LEXUS', 'FERRARI', 'LAMBORGHINI', 
         'ASTON_MARTIN', 'BUGATTI', 'MASERATI', 'BENTLEY', 'ROLLS_ROYCE'
     ) NOT NULL,
-    utilisateur_id INT not NULL,
-    CONSTRAINT fk_voiture_user FOREIGN KEY (utilisateur_id)
+    utilisateur_id INT,
+    CONSTRAINT fk_voiture_user FOREIGN KEY (utilisateur_id) 
         REFERENCES utilisateur(utilisateur_id) ON DELETE CASCADE
 );
 
 -- Création de la table "covoiturage"
 CREATE TABLE IF NOT EXISTS covoiturage (
     covoiturage_id INT AUTO_INCREMENT PRIMARY KEY,
-    date DATE NOT NULL,
-    heure_depart TIME not null,
-    duree TIME not null,
+    date_depart DATE NOT NULL,
+    date_arrivee DATE NOT NULL,
+    heure_depart DATE not null,
+    heure_arrivee DATE not null,
     lieu_depart VARCHAR(50) NOT NULL,
     lieu_arrivee VARCHAR(50) NOT NULL,
-    statut ENUM('ACTIF', 'EN_COURS', 'TERMINE') NOT null,
-    nb_place INT NOT null,
-    prix_personne FLOAT NOT null,
-    voiture_id INT NOT null,
-     CONSTRAINT fk_covoiturage_voiture FOREIGN KEY (voiture_id)
-        REFERENCES voiture(voiture_id) ON DELETE cascade
+    statut ENUM('ACTIF', 'EN_COURS', 'TERMINE') not NULL,
+    nb_place INT not null,
+    prix_personne INT not null
 );
 
 -- Création de la table "covoitureur"
 CREATE TABLE IF NOT EXISTS covoitureur (
 	covoitureur_id INT AUTO_INCREMENT PRIMARY KEY,
-	role ENUM('PASSAGER', 'CONDUCTEUR') not NULL,
+	role ENUM('PASSAGER', 'CONDUCTEUR'),
 	validation_covoiturage BOOLEAN DEFAULT false,
-	utilisateur_id INT not NULL,
-	covoiturage_id INT not NULL,
-    CONSTRAINT fk_covoitureur_user FOREIGN KEY (utilisateur_id)
+	utilisateur_id INT,
+	covoiturage_id INT,
+    CONSTRAINT fk_covoitureur_user FOREIGN KEY (utilisateur_id) 
         REFERENCES utilisateur(utilisateur_id) ON DELETE cascade,
     constraint fk_covoitureur_covoiturage foreign key (covoiturage_id)
     	REFERENCES covoiturage(covoiturage_id) ON DELETE cascade
@@ -77,10 +74,10 @@ CREATE TABLE IF NOT EXISTS covoitureur (
 -- Création de la table "avis" en relation vers "covoitureur"
 CREATE TABLE IF NOT EXISTS avis (
 	avis_id INT AUTO_INCREMENT PRIMARY KEY,
-	commentaire VARCHAR(50) not NULL,
-	note VARCHAR(50) not NULL,
+	commentaire VARCHAR(50),
+	note VARCHAR(50),
 	statut BOOLEAN DEFAULT false,
-	covoitureur_id INT not NULL,
-    CONSTRAINT fk_avis_covoitureur FOREIGN KEY (covoitureur_id)
+	covoitureur_id INT,
+    CONSTRAINT fk_avis_covoitureur FOREIGN KEY (covoitureur_id) 
         REFERENCES covoitureur(covoitureur_id) ON DELETE cascade
 );

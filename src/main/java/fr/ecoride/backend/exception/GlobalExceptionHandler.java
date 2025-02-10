@@ -12,8 +12,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErreurDTO> handleCustomException(CustomException ex) {
         ErreurDTO errorResponse = new ErreurDTO(
                 ex.getStatus().value(),
-                ex.getMessage(),
-                ex.getStatus().name()
+                ex.getStatus().name(),
+                ex.getMessage()
         );
         return ResponseEntity.status(ex.getStatus()).body(errorResponse);
     }

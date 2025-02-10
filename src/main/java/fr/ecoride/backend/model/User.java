@@ -49,6 +49,13 @@ public class User implements UserDetails {
     @Column(name = "role")
     private UserRoleEnum role;
 
+    @Column(name = "credit")
+    private float credit;
+
+    public float getCredit() { return credit; }
+
+    public void setCredit(float credit) { this.credit = credit; }
+
     public Integer getUtilisateurId() {
         return utilisateurId;
     }

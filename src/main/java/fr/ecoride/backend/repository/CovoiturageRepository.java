@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface CovoiturageRepository extends JpaRepository<Covoiturage, Integer> {
     List<Covoiturage> findByLieuDepartAndLieuArrivee(String lieuDepart, String lieuArrivee);
+
+    Covoiturage findByCovoiturageId(Integer covoiturageId);
 }
