@@ -17,13 +17,23 @@ public class AvisService {
         this.avisRepository = avisRepository;
     }
 
+    /**
+     * Permet de creer un avis
+     *
+     * @param avisRequestDTO
+     */
     public void createAvis(AvisRequestDTO avisRequestDTO) {
         avisRepository.save(AvisMapper.INSTANCE.toAvis(avisRequestDTO));
     }
 
-    //Trouver les avis en statut false pour l'employé
+    /**
+     * Permet de retourner une liste d'avis par
+     * rapport à un statut
+     *
+     * @param statut
+     * @return
+     */
     public List<AvisResponseDTO> findAvisByStatut(boolean statut) {
         return AvisMapper.INSTANCE.toListAvisResponseDTO(avisRepository.findAvisByStatut(statut));
-
     }
 }

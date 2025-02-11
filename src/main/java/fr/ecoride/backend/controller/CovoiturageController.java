@@ -2,21 +2,30 @@ package fr.ecoride.backend.controller;
 
 import fr.ecoride.backend.dto.covoiturage.CovoiturageRequestDTO;
 import fr.ecoride.backend.dto.covoiturage.CovoiturageResponseDTO;
+import fr.ecoride.backend.dto.covoiturage.CovoituragesUtilisateurResponseDTO;
 import fr.ecoride.backend.dto.covoitureur.CovoitureurRequestDTO;
+import fr.ecoride.backend.dto.utilisateur.UtilisateurDetailsDTO;
+import fr.ecoride.backend.dto.utilisateur.UtilisateurRequestDTO;
 import fr.ecoride.backend.email.EmailService;
 import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 import fr.ecoride.backend.enums.CovoitureurRoleEnum;
+import fr.ecoride.backend.exception.CustomException;
+import fr.ecoride.backend.mapper.CovoiturageMapper;
 import fr.ecoride.backend.model.Covoiturage;
 import fr.ecoride.backend.model.Covoitureur;
+import fr.ecoride.backend.model.User;
 import fr.ecoride.backend.service.CovoiturageService;
 import fr.ecoride.backend.service.CovoitureurService;
+import fr.ecoride.backend.service.UserDetailsServiceImp;
 import fr.ecoride.backend.utils.Constantes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,6 +40,8 @@ public class CovoiturageController {
     private CovoitureurService covoitureurService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private UserDetailsServiceImp userDetailsServiceImp;
 
     private static String DELETE_COVOITURAGE = "deleteCovoiturage";
     private static String FIND_COVOITURAGE = "findCovoiturages";
@@ -49,6 +60,56 @@ public class CovoiturageController {
         return ResponseEntity.ok(listeCovoiturageResponseDTO);
     }
 
+    @GetMapping("/covoituragesUtilisateur")
+    public ResponseEntity findUtilisateurCovoiturages(@RequestBody UtilisateurRequestDTO utilisateurRequestDTO) {
+        logger.debug(FIND_COVOITURAGE + Constantes.LOG_DEBUT);
+
+        //On récupère la liste des covoitureurs liés à l'utilisateur
+        List<Covoitureur> listeCovoitureur = covoitureurService.getCovoitureursOfUtilisateur(utilisateurRequestDTO.getUtilisateurId());
+
+        //On récupère la liste des covoiturage liés aux covoitureurs
+        List<CovoituragesUtilisateurResponseDTO> listeCovoituragesUtilisateurDTO = new ArrayList<CovoituragesUtilisateurResponseDTO>();
+
+        for(Covoitureur covoitureur : listeCovoitureur){
+
+            //Récupération du covoiturage
+            Covoiturage covoiturage = covoiturageService.getCovoiturage(covoitureur.getCovoiturageId());
+            CovoituragesUtilisateurResponseDTO covoituragesUtilisateurDTO = new CovoituragesUtilisateurResponseDTO();
+
+            //Si le covoiturage existe
+            if(covoiturage!=null){
+
+                //Ajout du covoiturage à l'occurence en sortie
+                covoituragesUtilisateurDTO.setCovoiturage(CovoiturageMapper.INSTANCE.toCovoiturageResponseDTO(covoiturage));
+
+                //Si le covoitureur qui correspond à l'utilisateur est passager alors on recherche le conducteur
+                if(covoitureur.getRole().equals(CovoitureurRoleEnum.PASSAGER)){
+                    Covoitureur conducteur = covoitureurService.getCovoitureursOfCovoiturage(covoiturage.getCovoiturageId())
+                            .stream()
+                            .filter(c -> c.getRole().equals(CovoitureurRoleEnum.CONDUCTEUR))
+                            .findFirst()
+                            .orElseThrow(() -> new CustomException("Covoitureur non trouvé", HttpStatus.FORBIDDEN));
+
+                    User utilisateur = userDetailsServiceImp.getUser(conducteur.getUtilisateurId());
+
+                    UtilisateurDetailsDTO utilisateurDetails = new UtilisateurDetailsDTO();
+                    utilisateurDetails.setNom(utilisateur.getNom());
+                    utilisateurDetails.setPrenom(utilisateur.getPrenom());
+                    utilisateurDetails.setPseudo(utilisateur.getPseudo());
+                    utilisateurDetails.setUtilisateurId(utilisateur.getUtilisateurId());
+
+                    covoituragesUtilisateurDTO.setConducteur(utilisateurDetails);
+                }else {
+                    covoituragesUtilisateurDTO.setConducteur(new UtilisateurDetailsDTO());
+                }
+                listeCovoituragesUtilisateurDTO.add(covoituragesUtilisateurDTO);
+            }
+        }
+
+        logger.debug(FIND_COVOITURAGE + Constantes.LOG_FIN);
+        return ResponseEntity.ok(listeCovoituragesUtilisateurDTO);
+    }
+
     @PostMapping("/createCovoiturage")
     public void createCovoiturage(@RequestBody CovoiturageRequestDTO covoiturageRequestDTO) {
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_DEBUT);
@@ -56,9 +117,9 @@ public class CovoiturageController {
         //On créer le covoiturage
         CovoitureurRequestDTO covoitureurRequestDTO = new CovoitureurRequestDTO(covoiturageRequestDTO.getCovoiturageId(), CovoitureurRoleEnum.CONDUCTEUR,
                 covoiturageRequestDTO.getUtilisateurId(),
-                covoiturageService.createCovoiturage(covoiturageRequestDTO));
+                covoiturageService.createCovoiturage(covoiturageRequestDTO), true);
 
-        //On créer l'utilisateuir comme convoitureur CONDUCTEUR du covoiturage
+        //On créer l'utilisateur comme covoitureur CONDUCTEUR du covoiturage
         covoitureurService.createCovoitureur(covoitureurRequestDTO);
 
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_FIN);
@@ -122,4 +183,6 @@ public class CovoiturageController {
 
         logger.debug(TERMINATE_COVOITURAGE + Constantes.LOG_FIN);
     }
+
+
 }

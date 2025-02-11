@@ -9,4 +9,8 @@ import java.util.List;
 @Repository
 public interface CovoitureurRepository extends JpaRepository<Covoitureur, Integer> {
     List<Covoitureur> findByCovoiturageId(Integer covoiturageId);
+
+    List<Covoitureur> findByUtilisateurId(Integer utilisateurId);
+
+    Covoitureur findByUtilisateurIdAndCovoiturageId(Integer utilisateurId, Integer covoiturageId);
 }

@@ -28,15 +28,15 @@ public class UserDetailsServiceImp implements UserDetailsService {
      * Permet de soustraire des crédits à un utilisateur
      *
      * @param utilisateurId
-     * @param prixCovoit
+     * @param credits
      */
-    public void updateCredits(Integer utilisateurId, float prixCovoit, boolean isAddition){
+    public void updateCredits(Integer utilisateurId, float credits, boolean isAddition){
 
         // On récupère l'utilisateur
         User user = userRepository.findByUtilisateurId(utilisateurId);
 
         // On calcule le nouveau crédit
-        float creditResult = isAddition ? user.getCredit() + prixCovoit : user.getCredit() - prixCovoit;
+        float creditResult = isAddition ? user.getCredit() + credits : user.getCredit() - credits;
 
         // Vérification uniquement si c'est une soustraction
         if (!isAddition && creditResult < 0) {
@@ -48,5 +48,16 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
         // Sauvegarde en base
         userRepository.save(user);
+    }
+
+    /**
+     * Permet de récupérer un utilisateur
+     *
+     * @param utilisateurId
+     * @return user
+     */
+    public User getUser(Integer utilisateurId){
+        // On récupère l'utilisateur
+        return userRepository.findByUtilisateurId(utilisateurId);
     }
 }

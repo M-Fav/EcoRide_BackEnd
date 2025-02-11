@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS covoiturage (
     duree TIME not null,
     lieu_depart VARCHAR(50) NOT NULL,
     lieu_arrivee VARCHAR(50) NOT NULL,
-    statut ENUM('ACTIF', 'EN_COURS', 'TERMINE') NOT null,
+    statut ENUM('ACTIF', 'EN_COURS', 'TERMINE', 'VALIDE') NOT null,
     nb_place INT NOT null,
     prix_personne FLOAT NOT null,
     voiture_id INT NOT null,
