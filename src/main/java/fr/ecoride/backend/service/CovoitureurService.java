@@ -12,6 +12,7 @@ import fr.ecoride.backend.repository.UserRepository;
 import fr.ecoride.backend.utils.Constantes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,9 @@ public class CovoitureurService {
     private static String CREATE_COVOITUREUR = "createCovoitureur";
     private static String DELETE_COVOITUREUR = "deleteCovoitureur";
     private static String GET_COVOITUREURS_OF_COVOITURAGE = "getCovoitureursOfCovoiturage";
+    private static String SEND_EMAIL_VALIDATION_COVOITUREUR = "sendEmailValidationCovoitureur";
+    private static String VALIDATE_COVOITURAGE = "validateCovoiturage";
+    private static String GET_COVOITUREURS_OF_UTILISATEUR = "getCovoitureursOfUtilisateur";
 
     public CovoitureurService(CovoitureurRepository covoitureurRepository, CovoiturageRepository covoiturageRepository, UserDetailsServiceImp userDetailsServiceImp, UserRepository userRepository, EmailService emailService) {
         this.covoitureurRepository = covoitureurRepository;
@@ -101,11 +105,69 @@ public class CovoitureurService {
 
     /**
      * Envoi du mail de validation du Covoiturage au Covoitureur
+     *
      * @param covoiturage
      * @param covoitureur
      */
+    @Async
     public void sendEmailValidationCovoitureur(Covoiturage covoiturage,Covoitureur covoitureur) {
+        logger.debug(SEND_EMAIL_VALIDATION_COVOITUREUR + Constantes.LOG_DEBUT);
+
         String email = userRepository.findByUtilisateurId(covoitureur.getUtilisateurId()).getEmail();
         emailService.sendEmailValidationCovoiturage(covoiturage, covoitureur, email);
+
+        logger.debug(SEND_EMAIL_VALIDATION_COVOITUREUR + Constantes.LOG_FIN);
+    }
+
+    /**
+     * Permet au covoitureur de valider le covoiturage
+     *
+     * @param covoiturageId
+     * @param utilisateurId
+     */
+    public void validateCovoiturage(Integer covoiturageId, Integer utilisateurId) {
+        logger.debug(VALIDATE_COVOITURAGE + Constantes.LOG_DEBUT);
+
+        //On récupère le covoitureur et on passe l'indicateur de validation covoiturage à true
+        Covoitureur covoitureur = covoitureurRepository.findByUtilisateurIdAndCovoiturageId(utilisateurId,
+                covoiturageId);
+        covoitureur.setValidationCovoiturage(true);
+        covoitureurRepository.save(covoitureur);
+
+        logger.debug(VALIDATE_COVOITURAGE + Constantes.LOG_FIN);
+    }
+
+    /**
+     * Permet de retourner l'indicateur de validation
+     * totale d'un covoiturage par les covoitureurs
+     *
+     * @param listeCovoitureurs
+     * @return
+     */
+    public boolean isValidateByAllCovoitureurs(List<Covoitureur> listeCovoitureurs){
+
+        //On vérifie si il reste un passager qui n'a pas validé le covoiturage
+        boolean isNotAllValidate = listeCovoitureurs.stream()
+                .anyMatch(c -> c.getRole() == CovoitureurRoleEnum.PASSAGER
+                && !c.isValidationCovoiturage());
+
+        return !isNotAllValidate;
+    }
+
+    /**
+     * Permet de récupérer la liste des covoitureurs liés à
+     * l'utilisateur
+     *
+     * @param utilisateurId
+     * @return listeCovoitureur
+     */
+    public List<Covoitureur> getCovoitureursOfUtilisateur(Integer utilisateurId) {
+        logger.debug(GET_COVOITUREURS_OF_UTILISATEUR + Constantes.LOG_DEBUT);
+
+        //On récupère la list des covoitureurs d'un utilisateur
+        List<Covoitureur> listeCovoitureur = covoitureurRepository.findByUtilisateurId(utilisateurId);
+
+        logger.debug(GET_COVOITUREURS_OF_UTILISATEUR + Constantes.LOG_FIN);
+        return listeCovoitureur;
     }
 }

@@ -4,5 +4,6 @@ public enum CovoiturageStatutEnum {
 
     ACTIF,
     EN_COURS,
-    TERMINE;
+    TERMINE,
+    VALIDE
 }

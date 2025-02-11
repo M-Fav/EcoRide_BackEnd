@@ -60,11 +60,15 @@ public class CovoiturageService {
     public Integer createCovoiturage(CovoiturageRequestDTO covoiturageRequestDTO) {
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_DEBUT);
 
+        //On initi le statut à ACTIF lors de la création
+        Covoiturage covoiturage = CovoiturageMapper.INSTANCE.toCovoiturage(covoiturageRequestDTO);
+        covoiturage.setStatut(CovoiturageStatutEnum.ACTIF);
+
         //On fait le save et on return l'id du covoiturage
-        Covoiturage covoiturage = covoiturageRepository.save(CovoiturageMapper.INSTANCE.toCovoiturage(covoiturageRequestDTO));
+        Covoiturage covoiturageCreate = covoiturageRepository.save(covoiturage);
 
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_FIN);
-        return covoiturage.getCovoiturageId();
+        return covoiturageCreate.getCovoiturageId();
     }
 
     /**

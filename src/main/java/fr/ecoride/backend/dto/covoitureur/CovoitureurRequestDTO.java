@@ -12,11 +12,14 @@ public class CovoitureurRequestDTO {
 
     private Integer covoiturageId;
 
-    public CovoitureurRequestDTO(Integer covoitureurId, CovoitureurRoleEnum role, Integer utilisateurId, Integer covoiturageId) {
+    private boolean validationCovoiturage;
+
+    public CovoitureurRequestDTO(Integer covoitureurId, CovoitureurRoleEnum role, Integer utilisateurId, Integer covoiturageId, boolean validationCovoiturage) {
         this.covoitureurId = covoitureurId;
         this.role = role;
         this.utilisateurId = utilisateurId;
         this.covoiturageId = covoiturageId;
+        this.validationCovoiturage = validationCovoiturage;
     }
 
     public Integer getCovoitureurId() {
@@ -50,4 +53,8 @@ public class CovoitureurRequestDTO {
     public void setCovoiturageId(Integer covoiturageId) {
         this.covoiturageId = covoiturageId;
     }
+
+    public boolean isValidationCovoiturage() { return validationCovoiturage; }
+
+    public void setValidationCovoiturage(boolean validationCovoiturage) { this.validationCovoiturage = validationCovoiturage; }
 }

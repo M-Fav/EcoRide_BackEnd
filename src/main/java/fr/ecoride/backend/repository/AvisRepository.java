@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AvisRepository extends JpaRepository<Avis, Long> {
+public interface AvisRepository extends JpaRepository<Avis, Integer> {
     List<Avis> findAvisByStatut(boolean statut);
-
 }
