@@ -2,7 +2,9 @@ package fr.ecoride.backend.service;
 
 import fr.ecoride.backend.dto.avis.AvisRequestDTO;
 import fr.ecoride.backend.dto.avis.AvisResponseDTO;
+import fr.ecoride.backend.enums.AvisDecisionEnum;
 import fr.ecoride.backend.mapper.AvisMapper;
+import fr.ecoride.backend.model.Avis;
 import fr.ecoride.backend.repository.AvisRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +31,21 @@ public class AvisService {
     /**
      * Permet de retourner une liste d'avis par
      * rapport à un statut
-     *
-     * @param statut
      * @return
      */
-    public List<AvisResponseDTO> findAvisByStatut(boolean statut) {
-        return AvisMapper.INSTANCE.toListAvisResponseDTO(avisRepository.findAvisByStatut(statut));
+    public List<AvisResponseDTO> getAvisATraiter() {
+        return AvisMapper.INSTANCE.toListAvisResponseDTO(avisRepository.findByDecision(null));
     }
+
+    /**
+     * Permet de traiter et valider un avis
+     * @param avisId
+     * @param decision
+     */
+    public void traiterAvis(Integer avisId, AvisDecisionEnum decision) {
+        Avis avisATraiter = avisRepository.findByAvisId(avisId);
+        avisATraiter.setDecision(decision);
+        avisRepository.save(avisATraiter);
+    }
+
 }

@@ -20,9 +20,14 @@ public class AvisController {
         avisService.createAvis(avisRequestDTO);
     }
 
-    @GetMapping("/findAvisByStatut")
-    public ResponseEntity findAvisByStatut(@RequestBody Avis request) {
-        return ResponseEntity.ok(avisService.findAvisByStatut(request.getStatut()));
+    @GetMapping("/getAvisATraiter")
+    public ResponseEntity getAvisATraiter() {
+        return ResponseEntity.ok(avisService.getAvisATraiter());
+    }
+
+    @PutMapping("/avisDecision")
+    public void traiterAvis(@RequestBody AvisRequestDTO avisRequestDTO) {
+        avisService.traiterAvis(avisRequestDTO.getAvisId(), avisRequestDTO.getDecision());
     }
 
 }

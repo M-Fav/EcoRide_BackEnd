@@ -1,5 +1,6 @@
 package fr.ecoride.backend.model;
 
+import fr.ecoride.backend.enums.AvisDecisionEnum;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,9 +15,9 @@ public class Avis {
     private String commentaire;
     @Column(name = "note")
     private String note;
-    @Column(name = "statut")
-    private boolean statut;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "decision")
+    private AvisDecisionEnum decision;
     @Column(name = "covoitureur_id")
     private String covoitureurId;
 
@@ -46,12 +47,12 @@ public class Avis {
         this.note = note;
     }
 
-    public boolean getStatut() {
-        return statut;
+    public AvisDecisionEnum getDecision() {
+        return decision;
     }
 
-    public void setStatut(boolean statut) {
-        this.statut = statut;
+    public void setDecision(AvisDecisionEnum decision) {
+        this.decision = decision;
     }
 
     public String getCovoitureurId() {
