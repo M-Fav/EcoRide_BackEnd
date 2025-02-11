@@ -57,8 +57,11 @@ CREATE TABLE IF NOT EXISTS covoiturage (
     nb_place INT NOT null,
     prix_personne FLOAT NOT null,
     voiture_id INT NOT null,
+    conducteur_id INT not null,
      CONSTRAINT fk_covoiturage_voiture FOREIGN KEY (voiture_id)
-        REFERENCES voiture(voiture_id) ON DELETE cascade
+        REFERENCES voiture(voiture_id) ON DELETE cascade,
+    CONSTRAINT fk_covoiturage_conducteur FOREIGN KEY (conducteur_id)
+        REFERENCES utilisateur(utilisateur_id) ON DELETE cascade
 );
 
 -- Création de la table "covoitureur"
@@ -79,7 +82,8 @@ CREATE TABLE IF NOT EXISTS avis (
 	avis_id INT AUTO_INCREMENT PRIMARY KEY,
 	commentaire VARCHAR(50) not NULL,
 	note VARCHAR(50) not NULL,
-	statut BOOLEAN DEFAULT false,
+	traite BOOLEAN DEFAULT false,
+	valide BOOLEAN default NULL,
 	covoitureur_id INT not NULL,
     CONSTRAINT fk_avis_covoitureur FOREIGN KEY (covoitureur_id)
         REFERENCES covoitureur(covoitureur_id) ON DELETE cascade

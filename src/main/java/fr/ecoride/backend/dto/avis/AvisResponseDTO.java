@@ -1,18 +1,20 @@
 package fr.ecoride.backend.dto.avis;
 
+import fr.ecoride.backend.enums.AvisDecisionEnum;
+
 public class AvisResponseDTO {
 
     private Integer avisId;
     private String commentaire;
     private String note;
-    private boolean statut;
+    private AvisDecisionEnum decision;
     private Integer covoitureurId;
 
-    public AvisResponseDTO(Integer avisId, String commentaire, String note, boolean statut, Integer covoitureurId) {
+    public AvisResponseDTO(Integer avisId, String commentaire, String note, AvisDecisionEnum decision, Integer covoitureurId) {
         this.avisId = avisId;
         this.commentaire = commentaire;
         this.note = note;
-        this.statut = statut;
+        this.decision = decision;
         this.covoitureurId = covoitureurId;
     }
 
@@ -32,12 +34,12 @@ public class AvisResponseDTO {
         this.note = note;
     }
 
-    public boolean getStatut() {
-        return statut;
+    public AvisDecisionEnum getDecision() {
+        return decision;
     }
 
-    public void setStatut(boolean statut) {
-        this.statut = statut;
+    public void setDecision(AvisDecisionEnum decision) {
+        this.decision = decision;
     }
 
     public Integer getCovoitureurId() {

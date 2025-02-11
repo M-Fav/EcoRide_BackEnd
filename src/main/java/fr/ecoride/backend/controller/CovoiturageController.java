@@ -82,15 +82,7 @@ public class CovoiturageController {
                 //Ajout du covoiturage à l'occurence en sortie
                 covoituragesUtilisateurDTO.setCovoiturage(CovoiturageMapper.INSTANCE.toCovoiturageResponseDTO(covoiturage));
 
-                //Si le covoitureur qui correspond à l'utilisateur est passager alors on recherche le conducteur
-                if(covoitureur.getRole().equals(CovoitureurRoleEnum.PASSAGER)){
-                    Covoitureur conducteur = covoitureurService.getCovoitureursOfCovoiturage(covoiturage.getCovoiturageId())
-                            .stream()
-                            .filter(c -> c.getRole().equals(CovoitureurRoleEnum.CONDUCTEUR))
-                            .findFirst()
-                            .orElseThrow(() -> new CustomException("Covoitureur non trouvé", HttpStatus.FORBIDDEN));
-
-                    User utilisateur = userDetailsServiceImp.getUser(conducteur.getUtilisateurId());
+                    User utilisateur = userDetailsServiceImp.getUser(covoiturage.getConducteurId());
 
                     UtilisateurDetailsDTO utilisateurDetails = new UtilisateurDetailsDTO();
                     utilisateurDetails.setNom(utilisateur.getNom());
@@ -99,9 +91,6 @@ public class CovoiturageController {
                     utilisateurDetails.setUtilisateurId(utilisateur.getUtilisateurId());
 
                     covoituragesUtilisateurDTO.setConducteur(utilisateurDetails);
-                }else {
-                    covoituragesUtilisateurDTO.setConducteur(new UtilisateurDetailsDTO());
-                }
                 listeCovoituragesUtilisateurDTO.add(covoituragesUtilisateurDTO);
             }
         }
@@ -115,9 +104,9 @@ public class CovoiturageController {
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_DEBUT);
 
         //On créer le covoiturage
+        Integer covoiturageId = covoiturageService.createCovoiturage(covoiturageRequestDTO);
         CovoitureurRequestDTO covoitureurRequestDTO = new CovoitureurRequestDTO(covoiturageRequestDTO.getCovoiturageId(), CovoitureurRoleEnum.CONDUCTEUR,
-                covoiturageRequestDTO.getUtilisateurId(),
-                covoiturageService.createCovoiturage(covoiturageRequestDTO), true);
+                covoiturageRequestDTO.getUtilisateurId(), covoiturageId, true);
 
         //On créer l'utilisateur comme covoitureur CONDUCTEUR du covoiturage
         covoitureurService.createCovoitureur(covoitureurRequestDTO);

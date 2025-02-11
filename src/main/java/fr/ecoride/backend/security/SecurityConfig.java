@@ -52,7 +52,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                "/voitures/listeVoiture").hasAuthority(String.valueOf(UserRoleEnum.UTILISATEUR.toString()))
                         .requestMatchers(
-                                "avis/findAvisByStatut").hasAuthority(String.valueOf(UserRoleEnum.EMPLOYE.toString()))
+                                "avis/getAvisATraiter",
+                                "avis/traiterAvis").hasAuthority(String.valueOf(UserRoleEnum.EMPLOYE.toString()))
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsServiceImp)

@@ -4,6 +4,7 @@ import fr.ecoride.backend.dto.covoiturage.CovoiturageRequestDTO;
 import fr.ecoride.backend.dto.covoiturage.CovoiturageResponseDTO;
 import fr.ecoride.backend.model.Covoiturage;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public interface CovoiturageMapper {
 
     CovoiturageResponseDTO toCovoiturageResponseDTO(Covoiturage covoiturage);
 
+    @Mapping(source = "utilisateurId", target = "conducteurId")
     Covoiturage toCovoiturage(CovoiturageRequestDTO covoiturageRequestDTO);
 
     List<CovoiturageResponseDTO> toListCovoiturageResponseDTO(List<Covoiturage> covoiturageList);
