@@ -50,10 +50,10 @@ public class SecurityConfig {
                                 "/refresh_token/**",
                                 "/donneesEntreprise/**").permitAll()
                         .requestMatchers(
-                               "/voitures/listeVoiture").hasAuthority(String.valueOf(UserRoleEnum.UTILISATEUR.toString()))
-                        .requestMatchers(
-                                "avis/getAvisATraiter",
+                                "/avis/getAvisATraiter",
                                 "avis/traiterAvis").hasAuthority(String.valueOf(UserRoleEnum.EMPLOYE.toString()))
+                        .requestMatchers(
+                                "utilisateur/gererStatutUtilisateur").hasAuthority(String.valueOf(UserRoleEnum.ADMINISTRATEUR.toString()))
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsServiceImp)

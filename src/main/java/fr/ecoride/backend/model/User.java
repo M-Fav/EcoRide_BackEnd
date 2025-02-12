@@ -1,6 +1,7 @@
 package fr.ecoride.backend.model;
 
 import fr.ecoride.backend.enums.UserRoleEnum;
+import fr.ecoride.backend.enums.UserStatutEnum;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,6 +49,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private UserRoleEnum role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "statut")
+    private UserStatutEnum statut;
 
     @Column(name = "credit")
     private float credit;
@@ -165,4 +170,12 @@ public class User implements UserDetails {
     public UserRoleEnum getRole() { return role; }
 
     public void setRole(UserRoleEnum role) { this.role = role; }
+
+    public UserStatutEnum getStatut() {
+        return statut;
+    }
+
+    public void setStatut(UserStatutEnum statut) {
+        this.statut = statut;
+    }
 }
