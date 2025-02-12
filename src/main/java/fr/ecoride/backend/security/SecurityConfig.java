@@ -53,7 +53,8 @@ public class SecurityConfig {
                                 "/avis/getAvisATraiter",
                                 "avis/traiterAvis").hasAuthority(String.valueOf(UserRoleEnum.EMPLOYE.toString()))
                         .requestMatchers(
-                                "utilisateur/gererStatutUtilisateur").hasAuthority(String.valueOf(UserRoleEnum.ADMINISTRATEUR.toString()))
+                                "utilisateur/gererStatutUtilisateur",
+                                "employe/createEmploye").hasAuthority(String.valueOf(UserRoleEnum.ADMINISTRATEUR.toString()))
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsServiceImp)

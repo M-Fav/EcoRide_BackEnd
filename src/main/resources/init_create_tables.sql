@@ -11,13 +11,14 @@ CREATE TABLE IF NOT EXISTS utilisateur (
     adresse VARCHAR(50) NOT null,
     photo BLOB,
     telephone VARCHAR(10) NOT null,
-    credit FLOAT NOT null
+    credit FLOAT NOT null,
+    statut ENUM('ACTIF', 'INACTIF', 'SUSPENDU')
 );
 
 -- Création de la table "token" avec relation vers "utilisateur"
 CREATE TABLE IF NOT EXISTS token (
     token_id INT AUTO_INCREMENT PRIMARY KEY,
-    access_token VARCHAR(255) NOT NULL, 
+    access_token VARCHAR(255) NOT NULL,
     refresh_token VARCHAR(255) NOT NULL,
     is_logged_out BOOLEAN DEFAULT FALSE,
     utilisateur_id INT,
@@ -31,9 +32,9 @@ CREATE TABLE IF NOT EXISTS voiture (
     immatriculation VARCHAR(9) NOT NULL UNIQUE,
     energie ENUM('ESSENCE', 'DIESEL', 'HYBRIDE', 'ELECTRIQUE') NOT NULL,
     couleur VARCHAR(50) NOT NULL,
-    date_premiere_immatriculation DATE NOT NULL, 
+    date_premiere_immatriculation DATE NOT NULL,
     marque ENUM(
-        'TOYOTA', 'VOLKSWAGEN', 'MERCEDES_BENZ', 'BMW', 'AUDI', 
+        'TOYOTA', 'VOLKSWAGEN', 'MERCEDES_BENZ', 'BMW', 'AUDI',
         'FORD', 'HONDA', 'CHEVROLET', 'NISSAN', 'HYUNDAI',
         'KIA', 'PEUGEOT', 'RENAULT', 'TESLA', 'FIAT',
         'JEEP', 'VOLVO', 'LAND_ROVER', 'PORSCHE', 'MAZDA',
@@ -82,8 +83,7 @@ CREATE TABLE IF NOT EXISTS avis (
 	avis_id INT AUTO_INCREMENT PRIMARY KEY,
 	commentaire VARCHAR(50) not NULL,
 	note VARCHAR(50) not NULL,
-	traite BOOLEAN DEFAULT false,
-	valide BOOLEAN default NULL,
+	decision ENUM('ACCEPTE', 'REFUSE') default NULL,
 	covoitureur_id INT not NULL,
     CONSTRAINT fk_avis_covoitureur FOREIGN KEY (covoitureur_id)
         REFERENCES covoitureur(covoitureur_id) ON DELETE cascade
@@ -95,3 +95,51 @@ CREATE TABLE IF NOT EXISTS donnee_entreprise (
 	libelle VARCHAR(50) not NULL,
 	valeur VARCHAR(500) not NULL
 );
+
+-- Création de la table "statistique"
+CREATE TABLE IF NOT EXISTS statistique (
+	statistique_id INT AUTO_INCREMENT PRIMARY KEY,
+	date DATE not null,
+	type VARCHAR(50) not NULL,
+	valeur INT not NULL
+);
+
+
+
+DELIMITER $$
+
+CREATE TRIGGER after_covoiturage_update
+AFTER UPDATE ON covoiturage
+FOR EACH ROW
+BEGIN
+    DECLARE credit_count INT;
+    DECLARE covoiturage_count INT;
+
+    IF NEW.statut = 'VALIDE' AND OLD.statut <> 'VALIDE' THEN
+
+        -- Vérifier si une ligne "credit" existe déjà pour aujourd'hui
+        SELECT COUNT(*) INTO credit_count FROM statistique WHERE type = 'credit' AND DATE(NOW()) = DATE(NOW());
+
+        IF credit_count > 0 THEN
+            UPDATE statistique
+            SET valeur = valeur + 2
+            WHERE type = 'credit' AND DATE(NOW()) = DATE(NOW());
+        ELSE
+            INSERT INTO statistique (type, valeur, date) VALUES ('credit', 2, DATE(NOW()));
+        END IF;
+
+        -- Vérifier si une ligne "covoiturage" existe déjà pour aujourd'hui
+        SELECT COUNT(*) INTO covoiturage_count FROM statistique WHERE type = 'covoiturage' AND DATE(NOW()) = DATE(NOW());
+
+        IF covoiturage_count > 0 THEN
+            UPDATE statistique
+            SET valeur = valeur + 1
+            WHERE type = 'covoiturage' AND DATE(NOW()) = DATE(NOW());
+        ELSE
+            INSERT INTO statistique (type, valeur, date) VALUES ('covoiturage', 1, DATE(NOW()));
+        END IF;
+    END IF;
+END$$
+
+DELIMITER ;
+
