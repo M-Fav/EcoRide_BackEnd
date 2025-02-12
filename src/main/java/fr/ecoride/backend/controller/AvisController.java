@@ -1,7 +1,6 @@
 package fr.ecoride.backend.controller;
 
 import fr.ecoride.backend.dto.avis.AvisRequestDTO;
-import fr.ecoride.backend.model.Avis;
 import fr.ecoride.backend.service.AvisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

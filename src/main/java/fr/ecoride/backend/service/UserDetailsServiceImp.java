@@ -1,5 +1,6 @@
 package fr.ecoride.backend.service;
 
+import fr.ecoride.backend.enums.UserStatutEnum;
 import fr.ecoride.backend.exception.CustomException;
 import fr.ecoride.backend.model.User;
 import fr.ecoride.backend.repository.UserRepository;
@@ -20,6 +21,17 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String pseudo) throws UsernameNotFoundException {
+        return userRepository.findByPseudo(pseudo)
+                .orElseThrow(()-> new UsernameNotFoundException("User not found"));
+    }
+
+    /**
+     * permet de trouver un utilisateur par son pseudo
+     * @param pseudo
+     * @return
+     * @throws UsernameNotFoundException
+     */
+    public User findUtilisateurByPseudo(String pseudo) throws UsernameNotFoundException {
         return userRepository.findByPseudo(pseudo)
                 .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
@@ -59,5 +71,18 @@ public class UserDetailsServiceImp implements UserDetailsService {
     public User getUser(Integer utilisateurId){
         // On récupère l'utilisateur
         return userRepository.findByUtilisateurId(utilisateurId);
+    }
+
+    /**
+     * Permet de Susupendre ou actif un compte User
+     * @param utilisateurId
+     * @return user
+     */
+    public void gererStatutUser(Integer utilisateurId, UserStatutEnum statut) {
+        //on récupère l'utilisateur
+        User user = userRepository.findByUtilisateurId(utilisateurId);
+
+        user.setStatut(statut);
+        userRepository.save(user);
     }
 }

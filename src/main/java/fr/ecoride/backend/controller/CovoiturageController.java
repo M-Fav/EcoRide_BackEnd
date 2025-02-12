@@ -9,7 +9,6 @@ import fr.ecoride.backend.dto.utilisateur.UtilisateurRequestDTO;
 import fr.ecoride.backend.email.EmailService;
 import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 import fr.ecoride.backend.enums.CovoitureurRoleEnum;
-import fr.ecoride.backend.exception.CustomException;
 import fr.ecoride.backend.mapper.CovoiturageMapper;
 import fr.ecoride.backend.model.Covoiturage;
 import fr.ecoride.backend.model.Covoitureur;
@@ -21,7 +20,6 @@ import fr.ecoride.backend.utils.Constantes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +30,7 @@ import java.util.List;
 @RequestMapping("/covoiturage")
 public class CovoiturageController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CovoiturageController.class);
 
     @Autowired
     private CovoiturageService covoiturageService;
