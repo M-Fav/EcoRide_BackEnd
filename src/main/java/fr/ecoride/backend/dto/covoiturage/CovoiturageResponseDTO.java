@@ -1,36 +1,29 @@
 package fr.ecoride.backend.dto.covoiturage;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
 public class CovoiturageResponseDTO {
 
-    @JsonProperty("covoiturage_id")
     private Integer covoiturageId;
-    @JsonProperty("date")
-    private Date date;
-    @JsonProperty("heure_depart")
+    private LocalDate date;
     private LocalTime heureDepart;
-    @JsonProperty( "duree")
     private LocalTime duree;
-    @JsonProperty("lieu_depart")
     private String lieuDepart;
-    @JsonProperty("lieu_arrivee")
     private String lieuArrivee;
-    @JsonProperty("statut")
     private String statut;
-    @JsonProperty("nb_place")
     private int nbPlace;
-    @JsonProperty("prix_personne")
     private float prixPersonne;
 
-    public CovoiturageResponseDTO(Integer covoiturageId, Date date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+    public CovoiturageResponseDTO(Integer covoiturageId, LocalDate date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
         this.covoiturageId = covoiturageId;
         this.date = date;
         this.heureDepart = heureDepart;
@@ -50,11 +43,11 @@ public class CovoiturageResponseDTO {
         this.covoiturageId = covoiturageId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

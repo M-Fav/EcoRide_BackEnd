@@ -50,10 +50,16 @@ public class CovoitureurService {
     public void createCovoitureur(CovoitureurRequestDTO covoitureurRequestDTO) {
         logger.debug(CREATE_COVOITUREUR + Constantes.LOG_DEBUT);
 
-        //Si on créer un PASSAGER alors on soustrait le prix du covoiturage à ses crédits
+        //Si on créer un PASSAGER :
         if(covoitureurRequestDTO.getRole().equals(CovoitureurRoleEnum.PASSAGER)){
-            float prixCovoit = covoiturageRepository.findByCovoiturageId(covoitureurRequestDTO.getCovoiturageId()).getPrixPersonne();
-            userDetailsServiceImp.updateCredits(covoitureurRequestDTO.getUtilisateurId(), prixCovoit, false);
+            Covoiturage covoiturage = covoiturageRepository.findByCovoiturageId(covoitureurRequestDTO.getCovoiturageId());
+
+            //On soustrait le prix du covoiturage à ses crédits
+            userDetailsServiceImp.updateCredits(covoitureurRequestDTO.getUtilisateurId(), covoiturage.getPrixPersonne(), false);
+
+            //On met à jour les place disponible
+            covoiturage.setNbPlace(covoiturage.getNbPlace() - 1);
+            covoiturageRepository.save(covoiturage);
         }
 
         //On créer le covoitureur

@@ -3,6 +3,7 @@ package fr.ecoride.backend.model;
 import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -19,7 +20,7 @@ public class Covoiturage {
     @Column(name = "conducteur_id")
     private Integer conducteurId;
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
     @Column(name = "heure_depart")
     private LocalTime heureDepart;
     @Column(name = "duree")
@@ -70,11 +71,11 @@ public class Covoiturage {
         this.duree = duree;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

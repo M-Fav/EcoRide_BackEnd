@@ -4,8 +4,6 @@ import fr.ecoride.backend.dto.utilisateur.UtilisateurRequestDTO;
 import fr.ecoride.backend.dto.utilisateur.UtilisateurResponseDTO;
 import fr.ecoride.backend.model.User;
 import fr.ecoride.backend.service.UserDetailsServiceImp;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
