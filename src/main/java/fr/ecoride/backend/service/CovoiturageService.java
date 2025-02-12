@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,10 +40,14 @@ public class CovoiturageService {
      * @param lieuArrivee
      * @return
      */
-    public List<CovoiturageResponseDTO> findCovoiturages(String lieuDepart, String lieuArrivee) {
+    public List<CovoiturageResponseDTO> findCovoiturages(String lieuDepart, String lieuArrivee, Date date) {
         logger.debug(FIND_COVOITURAGES + Constantes.LOG_DEBUT);
 
-        List <Covoiturage> listeCovoiturages = covoiturageRepository.findByLieuDepartAndLieuArrivee(lieuDepart, lieuArrivee);
+        List <Covoiturage> listeCovoiturages = covoiturageRepository
+                .findByLieuDepartAndLieuArriveeAndDateAndNbPlaceGreaterThan(lieuDepart,
+                        lieuArrivee,
+                        date,
+                        0);
         List<CovoiturageResponseDTO> listeCovoiturageResponseDTOS = CovoiturageMapper
                 .INSTANCE
                 .toListCovoiturageResponseDTO(listeCovoiturages);

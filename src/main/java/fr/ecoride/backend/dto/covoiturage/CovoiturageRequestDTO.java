@@ -1,5 +1,6 @@
 package fr.ecoride.backend.dto.covoiturage;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 
 import java.time.LocalTime;
@@ -10,6 +11,7 @@ public class CovoiturageRequestDTO {
     private Integer covoiturageId;
     private Integer voitureId;
     private Integer utilisateurId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date date;
     private LocalTime heureDepart;
     private LocalTime duree;

@@ -52,7 +52,7 @@ public class CovoiturageController {
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_DEBUT);
 
         List<CovoiturageResponseDTO> listeCovoiturageResponseDTO =  covoiturageService.findCovoiturages(
-                request.getLieuDepart(), request.getLieuArrivee());
+                request.getLieuDepart(), request.getLieuArrivee(), request.getDate());
 
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_FIN);
         return ResponseEntity.ok(listeCovoiturageResponseDTO);
