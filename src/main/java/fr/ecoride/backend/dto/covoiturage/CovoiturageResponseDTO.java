@@ -7,14 +7,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
 public class CovoiturageResponseDTO {
 
     private Integer covoiturageId;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDate date;
     private LocalTime heureDepart;
     private LocalTime duree;
     private String lieuDepart;
@@ -23,7 +23,7 @@ public class CovoiturageResponseDTO {
     private int nbPlace;
     private float prixPersonne;
 
-    public CovoiturageResponseDTO(Integer covoiturageId, Date date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+    public CovoiturageResponseDTO(Integer covoiturageId, LocalDate date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
         this.covoiturageId = covoiturageId;
         this.date = date;
         this.heureDepart = heureDepart;
@@ -43,11 +43,11 @@ public class CovoiturageResponseDTO {
         this.covoiturageId = covoiturageId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

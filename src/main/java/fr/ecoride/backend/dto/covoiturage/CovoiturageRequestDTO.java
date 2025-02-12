@@ -3,6 +3,7 @@ package fr.ecoride.backend.dto.covoiturage;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -11,8 +12,7 @@ public class CovoiturageRequestDTO {
     private Integer covoiturageId;
     private Integer voitureId;
     private Integer utilisateurId;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDate date;
     private LocalTime heureDepart;
     private LocalTime duree;
     private String lieuDepart;
@@ -21,7 +21,7 @@ public class CovoiturageRequestDTO {
     private int nbPlace;
     private float prixPersonne;
 
-    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, Date date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, CovoiturageStatutEnum statut, int nbPlace, float prixPersonne) {
+    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, LocalDate date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, CovoiturageStatutEnum statut, int nbPlace, float prixPersonne) {
         this.covoiturageId = covoiturageId;
         this.voitureId = voitureId;
         this.utilisateurId = utilisateurId;
@@ -55,11 +55,11 @@ public class CovoiturageRequestDTO {
         this.utilisateurId = utilisateurId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
