@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS voiture (
 -- Création de la table "covoiturage"
 CREATE TABLE IF NOT EXISTS covoiturage (
     covoiturage_id INT AUTO_INCREMENT PRIMARY KEY,
-    date DATE NOT NULL,
+    date VARCHAR(10) not NULL,
     heure_depart TIME not null,
     duree TIME not null,
     lieu_depart VARCHAR(50) NOT NULL,
@@ -99,13 +99,14 @@ CREATE TABLE IF NOT EXISTS donnee_entreprise (
 -- Création de la table "statistique"
 CREATE TABLE IF NOT EXISTS statistique (
 	statistique_id INT AUTO_INCREMENT PRIMARY KEY,
-	date DATE not null,
+	date VARCHAR(10) not NULL,
 	type VARCHAR(50) not NULL,
 	valeur INT not NULL
 );
 
 
 
+-- Création du trigger après la mise à jour de la table "covoiturage"
 DELIMITER $$
 
 CREATE TRIGGER after_covoiturage_update
@@ -114,32 +115,41 @@ FOR EACH ROW
 BEGIN
     DECLARE credit_count INT;
     DECLARE covoiturage_count INT;
+    DECLARE today_date VARCHAR(10);
+
+    -- Obtenir la date actuelle au format 'YYYY-MM-DD'
+    SET today_date = DATE_FORMAT(NOW(), '%Y-%m-%d');
 
     IF NEW.statut = 'VALIDE' AND OLD.statut <> 'VALIDE' THEN
 
         -- Vérifier si une ligne "credit" existe déjà pour aujourd'hui
-        SELECT COUNT(*) INTO credit_count FROM statistique WHERE type = 'credit' AND DATE(NOW()) = DATE(NOW());
+        SELECT COUNT(*) INTO credit_count FROM statistique WHERE type = 'credit' AND date = today_date;
 
         IF credit_count > 0 THEN
             UPDATE statistique
             SET valeur = valeur + 2
-            WHERE type = 'credit' AND DATE(NOW()) = DATE(NOW());
+            WHERE type = 'credit' AND date = today_date;
         ELSE
-            INSERT INTO statistique (type, valeur, date) VALUES ('credit', 2, DATE(NOW()));
+            INSERT INTO statistique (type, valeur, date) VALUES ('credit', 2, today_date);
         END IF;
 
         -- Vérifier si une ligne "covoiturage" existe déjà pour aujourd'hui
-        SELECT COUNT(*) INTO covoiturage_count FROM statistique WHERE type = 'covoiturage' AND DATE(NOW()) = DATE(NOW());
+        SELECT COUNT(*) INTO covoiturage_count FROM statistique WHERE type = 'covoiturage' AND date = today_date;
 
         IF covoiturage_count > 0 THEN
             UPDATE statistique
             SET valeur = valeur + 1
-            WHERE type = 'covoiturage' AND DATE(NOW()) = DATE(NOW());
+            WHERE type = 'covoiturage' AND date = today_date;
         ELSE
-            INSERT INTO statistique (type, valeur, date) VALUES ('covoiturage', 1, DATE(NOW()));
+            INSERT INTO statistique (type, valeur, date) VALUES ('covoiturage', 1, today_date);
         END IF;
     END IF;
 END$$
 
 DELIMITER ;
+
+
+
+
+
 
