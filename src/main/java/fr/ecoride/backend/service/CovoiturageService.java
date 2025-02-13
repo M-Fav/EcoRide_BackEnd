@@ -41,7 +41,7 @@ public class CovoiturageService {
      * @param lieuArrivee
      * @return
      */
-    public List<CovoiturageResponseDTO> findCovoiturages(String lieuDepart, String lieuArrivee, LocalDate date) {
+    public List<CovoiturageResponseDTO> findCovoiturages(String lieuDepart, String lieuArrivee, String date) {
         logger.debug(FIND_COVOITURAGES + Constantes.LOG_DEBUT);
 
         List <Covoiturage> listeCovoiturages = covoiturageRepository

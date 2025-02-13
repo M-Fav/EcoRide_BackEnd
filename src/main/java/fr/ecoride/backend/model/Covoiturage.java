@@ -20,7 +20,7 @@ public class Covoiturage {
     @Column(name = "conducteur_id")
     private Integer conducteurId;
     @Column(name = "date")
-    private LocalDate date;
+    private String date;
     @Column(name = "heure_depart")
     private LocalTime heureDepart;
     @Column(name = "duree")
@@ -71,11 +71,11 @@ public class Covoiturage {
         this.duree = duree;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
