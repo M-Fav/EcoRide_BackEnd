@@ -1,5 +1,6 @@
 package fr.ecoride.backend.dto.utilisateur;
 
+import fr.ecoride.backend.enums.UserRoleEnum;
 import fr.ecoride.backend.enums.UserStatutEnum;
 
 public class UtilisateurRequestDTO {
