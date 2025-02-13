@@ -13,7 +13,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "http://localhost:8081",  // Autorise le frontend local
-                        "https://mon-frontend.herokuapp.com" // Remplace par l'URL Heroku de ton frontend
+                        "https://ecoride-service-4d84c02e7cd5.herokuapp.com"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true);
