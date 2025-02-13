@@ -2,7 +2,9 @@ package fr.ecoride.backend.service;
 
 
 import fr.ecoride.backend.controller.AuthenticationController;
+import fr.ecoride.backend.dto.utilisateur.UtilisateurResponseDTO;
 import fr.ecoride.backend.exception.CustomException;
+import fr.ecoride.backend.mapper.UtilisateurMapper;
 import fr.ecoride.backend.model.*;
 import fr.ecoride.backend.repository.TokenRepository;
 import fr.ecoride.backend.repository.UserRepository;
@@ -54,7 +56,7 @@ public class AuthenticationService {
 
         // On controle si le User existe. s'il existe on l'authentifie
         if(userRepository.findByPseudo(request.getPseudo()).isPresent()) {
-            return new AuthenticationResponse(null, null,"L'utilisateur existe déjà");
+            return new AuthenticationResponse(null, null,"L'utilisateur existe déjà", null);
         }
 
         User user = request;
@@ -67,8 +69,10 @@ public class AuthenticationService {
 
         saveUserToken(accessToken, refreshToken, user);
 
+        UtilisateurResponseDTO utilisateurResponseDTO = UtilisateurMapper.INSANCE.toUtilsateurResponse(user);
+
         logger.debug(REGISTER);
-        return new AuthenticationResponse(accessToken, refreshToken,"L'utilisateur a bien été enregistré");
+        return new AuthenticationResponse(accessToken, refreshToken,"L'utilisateur a bien été enregistré", utilisateurResponseDTO);
     }
 
     public AuthenticationResponse authenticate(User request) {
@@ -93,8 +97,10 @@ public class AuthenticationService {
                 )
         );
 
+        UtilisateurResponseDTO utilisateurResponseDTO =UtilisateurMapper.INSANCE.toUtilsateurResponse(user);
+
         logger.debug(LOGIN + Constantes.LOG_FIN);
-        return new AuthenticationResponse(accessToken, refreshToken, "Connexion utilisateur réussie");
+        return new AuthenticationResponse(accessToken, refreshToken, "Connexion utilisateur réussie", utilisateurResponseDTO);
     }
     private void revokeAllTokenByUser(User user) {
         List<Token> validTokens = tokenRepository.findByUtilisateurId(user.getUtilisateurId());
@@ -145,7 +151,9 @@ public class AuthenticationService {
             revokeAllTokenByUser(user);
             saveUserToken(accessToken, refreshToken, user);
 
-            return new ResponseEntity(new AuthenticationResponse(accessToken, refreshToken, "New token generated"), HttpStatus.OK);
+            UtilisateurResponseDTO utilisateurResponseDTO = UtilisateurMapper.INSANCE.toUtilsateurResponse(user);
+
+            return new ResponseEntity(new AuthenticationResponse(accessToken, refreshToken, "New token generated", utilisateurResponseDTO), HttpStatus.OK);
         }
 
         logger.debug(REFRESH_TOKEN);

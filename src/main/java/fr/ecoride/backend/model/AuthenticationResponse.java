@@ -1,6 +1,7 @@
 package fr.ecoride.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.ecoride.backend.dto.utilisateur.UtilisateurResponseDTO;
 
 public class AuthenticationResponse {
     @JsonProperty("access_token")
@@ -12,10 +13,13 @@ public class AuthenticationResponse {
     @JsonProperty("message")
     private String message;
 
-    public AuthenticationResponse(String accessToken, String refreshToken, String message) {
+    private UtilisateurResponseDTO utilisateur;
+
+    public AuthenticationResponse(String accessToken, String refreshToken, String message, UtilisateurResponseDTO utilisateur) {
         this.accessToken = accessToken;
         this.message = message;
         this.refreshToken = refreshToken;
+        this.utilisateur = utilisateur;
     }
 
     public String getAccessToken() {
@@ -28,5 +32,9 @@ public class AuthenticationResponse {
 
     public String getMessage() {
         return message;
+    }
+
+    public UtilisateurResponseDTO getUtilisateur() {
+        return utilisateur;
     }
 }
