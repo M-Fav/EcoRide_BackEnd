@@ -12,7 +12,7 @@ import java.util.List;
 public interface CovoiturageRepository extends JpaRepository<Covoiturage, Integer> {
     List<Covoiturage> findByLieuDepartAndLieuArriveeAndDateAndNbPlaceGreaterThan(String lieuDepart,
                                                                                  String lieuArrivee,
-                                                                                 LocalDate date,
+                                                                                 String date,
                                                                                  Integer nbPlace);
 
     Covoiturage findByCovoiturageId(Integer covoiturageId);

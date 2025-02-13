@@ -14,7 +14,7 @@ import java.util.Date;
 public class CovoiturageResponseDTO {
 
     private Integer covoiturageId;
-    private LocalDate date;
+    private String date;
     private LocalTime heureDepart;
     private LocalTime duree;
     private String lieuDepart;
@@ -23,7 +23,7 @@ public class CovoiturageResponseDTO {
     private int nbPlace;
     private float prixPersonne;
 
-    public CovoiturageResponseDTO(Integer covoiturageId, LocalDate date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
         this.covoiturageId = covoiturageId;
         this.date = date;
         this.heureDepart = heureDepart;
@@ -43,11 +43,11 @@ public class CovoiturageResponseDTO {
         this.covoiturageId = covoiturageId;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

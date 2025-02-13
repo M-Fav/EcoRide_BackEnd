@@ -12,7 +12,7 @@ public class CovoiturageRequestDTO {
     private Integer covoiturageId;
     private Integer voitureId;
     private Integer utilisateurId;
-    private LocalDate date;
+    private String date;
     private LocalTime heureDepart;
     private LocalTime duree;
     private String lieuDepart;
@@ -21,7 +21,7 @@ public class CovoiturageRequestDTO {
     private int nbPlace;
     private float prixPersonne;
 
-    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, LocalDate date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, CovoiturageStatutEnum statut, int nbPlace, float prixPersonne) {
+    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, String date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, CovoiturageStatutEnum statut, int nbPlace, float prixPersonne) {
         this.covoiturageId = covoiturageId;
         this.voitureId = voitureId;
         this.utilisateurId = utilisateurId;
@@ -55,11 +55,11 @@ public class CovoiturageRequestDTO {
         this.utilisateurId = utilisateurId;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
