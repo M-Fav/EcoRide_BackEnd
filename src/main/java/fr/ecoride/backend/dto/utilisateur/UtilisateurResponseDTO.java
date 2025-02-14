@@ -6,6 +6,8 @@ public class UtilisateurResponseDTO {
 
     private Integer utilisateurId;
 
+    private String pseudo;
+
     private String nom;
 
     private String prenom;
@@ -24,6 +26,14 @@ public class UtilisateurResponseDTO {
 
     public void setUtilisateurId(Integer utilisateurId) {
         this.utilisateurId = utilisateurId;
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 
     public String getNom() {
