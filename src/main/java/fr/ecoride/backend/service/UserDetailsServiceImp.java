@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
@@ -20,6 +21,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String pseudo) throws UsernameNotFoundException {
         return userRepository.findByPseudo(pseudo)
                 .orElseThrow(()-> new UsernameNotFoundException("User not found"));
@@ -31,6 +33,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
      * @return
      * @throws UsernameNotFoundException
      */
+    @Transactional
     public User findUtilisateurByPseudo(String pseudo) throws UsernameNotFoundException {
         return userRepository.findByPseudo(pseudo)
                 .orElseThrow(()-> new UsernameNotFoundException("User not found"));
@@ -42,6 +45,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
      * @param utilisateurId
      * @param credits
      */
+    @Transactional
     public void updateCredits(Integer utilisateurId, float credits, boolean isAddition){
 
         // On récupère l'utilisateur
@@ -68,6 +72,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
      * @param utilisateurId
      * @return user
      */
+    @Transactional
     public User getUser(Integer utilisateurId){
         // On récupère l'utilisateur
         return userRepository.findByUtilisateurId(utilisateurId);
@@ -78,6 +83,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
      * @param utilisateurId
      * @return user
      */
+    @Transactional
     public void gererStatutUser(Integer utilisateurId, UserStatutEnum statut) {
         //on récupère l'utilisateur
         User user = userRepository.findByUtilisateurId(utilisateurId);

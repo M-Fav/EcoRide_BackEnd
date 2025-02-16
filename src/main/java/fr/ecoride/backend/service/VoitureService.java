@@ -7,6 +7,7 @@ import fr.ecoride.backend.model.Voiture;
 import fr.ecoride.backend.repository.VoitureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,10 +18,12 @@ public class VoitureService {
     @Autowired
     VoitureRepository voitureRepository;
 
+    @Transactional
     public void createVoiture(VoitureRequestDTO voitureRequestDTO) {
         voitureRepository.save(VoitureMapper.INSTANCE.toVoiture(voitureRequestDTO));
     }
 
+    @Transactional
     public List<VoitureResponseDTO> getAllVoitures() {
         return voitureRepository.findAll()
                 .stream()

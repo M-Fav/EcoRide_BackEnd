@@ -51,7 +51,6 @@ CREATE TABLE IF NOT EXISTS covoiturage (
     covoiturage_id INT AUTO_INCREMENT PRIMARY KEY,
     date VARCHAR(10) not NULL,
     heure_depart TIME not null,
-    duree TIME not null,
     lieu_depart VARCHAR(50) NOT NULL,
     lieu_arrivee VARCHAR(50) NOT NULL,
     statut ENUM('ACTIF', 'EN_COURS', 'TERMINE', 'VALIDE') NOT null,

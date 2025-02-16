@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class CovoitureurService {
      *
      * @param covoitureurRequestDTO
      */
+    @Transactional
     public void createCovoitureur(CovoitureurRequestDTO covoitureurRequestDTO) {
         logger.debug(CREATE_COVOITUREUR + Constantes.LOG_DEBUT);
 
@@ -74,6 +76,7 @@ public class CovoitureurService {
       * @param covoitureur
      * @param prixCovoiturage
      */
+    @Transactional
     public void deleteCovoitureur(Covoiturage covoiturage, Covoitureur covoitureur,float prixCovoiturage) {
         logger.debug(DELETE_COVOITUREUR + Constantes.LOG_DEBUT);
 
@@ -99,6 +102,7 @@ public class CovoitureurService {
      * @param covoiturageId
      * @return listeCovoitureur
      */
+    @Transactional
     public List<Covoitureur> getCovoitureursOfCovoiturage(Integer covoiturageId) {
         logger.debug(GET_COVOITUREURS_OF_COVOITURAGE + Constantes.LOG_DEBUT);
 
@@ -115,6 +119,7 @@ public class CovoitureurService {
      * @param covoiturage
      * @param covoitureur
      */
+    @Transactional
     @Async
     public void sendEmailValidationCovoitureur(Covoiturage covoiturage,Covoitureur covoitureur) {
         logger.debug(SEND_EMAIL_VALIDATION_COVOITUREUR + Constantes.LOG_DEBUT);
@@ -131,6 +136,7 @@ public class CovoitureurService {
      * @param covoiturageId
      * @param utilisateurId
      */
+    @Transactional
     public void validateCovoiturage(Integer covoiturageId, Integer utilisateurId) {
         logger.debug(VALIDATE_COVOITURAGE + Constantes.LOG_DEBUT);
 
@@ -150,6 +156,7 @@ public class CovoitureurService {
      * @param listeCovoitureurs
      * @return
      */
+    @Transactional
     public boolean isValidateByAllCovoitureurs(List<Covoitureur> listeCovoitureurs){
 
         //On vérifie si il reste un passager qui n'a pas validé le covoiturage
@@ -167,6 +174,7 @@ public class CovoitureurService {
      * @param utilisateurId
      * @return listeCovoitureur
      */
+    @Transactional
     public List<Covoitureur> getCovoitureursOfUtilisateur(Integer utilisateurId) {
         logger.debug(GET_COVOITUREURS_OF_UTILISATEUR + Constantes.LOG_DEBUT);
 

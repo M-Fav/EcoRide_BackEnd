@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -37,6 +38,7 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    @Transactional
     public boolean isValid(String token, UserDetails user) {
         String username = extractUsername(token);
 
@@ -48,6 +50,7 @@ public class JwtService {
         return (username.equals(user.getUsername())) && !isTokenExpired(token) && validToken;
     }
 
+    @Transactional
     public boolean isValidRefreshToken(String token, User user) {
         String username = extractUsername(token);
 

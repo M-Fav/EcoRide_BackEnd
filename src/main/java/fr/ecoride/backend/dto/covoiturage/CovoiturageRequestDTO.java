@@ -14,20 +14,18 @@ public class CovoiturageRequestDTO {
     private Integer utilisateurId;
     private String date;
     private LocalTime heureDepart;
-    private LocalTime duree;
     private String lieuDepart;
     private String lieuArrivee;
     private CovoiturageStatutEnum statut;
     private int nbPlace;
     private float prixPersonne;
 
-    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, String date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, CovoiturageStatutEnum statut, int nbPlace, float prixPersonne) {
+    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, String date, LocalTime heureDepart, String lieuDepart, String lieuArrivee, CovoiturageStatutEnum statut, int nbPlace, float prixPersonne) {
         this.covoiturageId = covoiturageId;
         this.voitureId = voitureId;
         this.utilisateurId = utilisateurId;
         this.date = date;
         this.heureDepart = heureDepart;
-        this.duree = duree;
         this.lieuDepart = lieuDepart;
         this.lieuArrivee = lieuArrivee;
         this.statut = statut;
@@ -69,14 +67,6 @@ public class CovoiturageRequestDTO {
 
     public void setHeureDepart(LocalTime heureDepart) {
         this.heureDepart = heureDepart;
-    }
-
-    public LocalTime getDuree() {
-        return duree;
-    }
-
-    public void setDuree(LocalTime duree) {
-        this.duree = duree;
     }
 
     public String getLieuDepart() {

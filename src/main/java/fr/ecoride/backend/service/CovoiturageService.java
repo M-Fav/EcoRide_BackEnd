@@ -11,9 +11,8 @@ import fr.ecoride.backend.utils.Constantes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,6 +40,7 @@ public class CovoiturageService {
      * @param lieuArrivee
      * @return
      */
+    @Transactional
     public List<CovoiturageResponseDTO> findCovoiturages(String lieuDepart, String lieuArrivee, String date) {
         logger.debug(FIND_COVOITURAGES + Constantes.LOG_DEBUT);
 
@@ -66,6 +66,7 @@ public class CovoiturageService {
      * @param covoiturageRequestDTO
      * @return
      */
+    @Transactional
     public Integer createCovoiturage(CovoiturageRequestDTO covoiturageRequestDTO) {
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_DEBUT);
 
@@ -86,6 +87,7 @@ public class CovoiturageService {
      * @param covoiturageId
      * @return covoiturage
      */
+    @Transactional
     public Covoiturage getCovoiturage(Integer covoiturageId) {
         logger.debug(GET_COVOITURAGE + Constantes.LOG_DEBUT);
 
@@ -101,6 +103,7 @@ public class CovoiturageService {
      *
      * @param covoiturageId
      */
+    @Transactional
     public void deleteCovoiturage(Integer covoiturageId) {
         logger.debug(DELETE_COVOITURAGE + Constantes.LOG_DEBUT);
 
@@ -115,6 +118,7 @@ public class CovoiturageService {
      * @param covoiturageId
      * @param statut
      */
+    @Transactional
     public void updateStatutCovoiturage(Integer covoiturageId, CovoiturageStatutEnum statut) {
         logger.debug(UPDATE_STATUT_COVOITURAGE + Constantes.LOG_DEBUT);
 

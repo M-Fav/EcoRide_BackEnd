@@ -7,6 +7,7 @@ import fr.ecoride.backend.mapper.AvisMapper;
 import fr.ecoride.backend.model.Avis;
 import fr.ecoride.backend.repository.AvisRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class AvisService {
      *
      * @param avisRequestDTO
      */
+    @Transactional
     public void createAvis(AvisRequestDTO avisRequestDTO) {
         avisRepository.save(AvisMapper.INSTANCE.toAvis(avisRequestDTO));
     }
@@ -33,6 +35,7 @@ public class AvisService {
      * rapport à un statut
      * @return
      */
+    @Transactional
     public List<AvisResponseDTO> getAvisATraiter() {
         return AvisMapper.INSTANCE.toListAvisResponseDTO(avisRepository.findByDecision(null));
     }
@@ -42,6 +45,7 @@ public class AvisService {
      * @param avisId
      * @param decision
      */
+    @Transactional
     public void traiterAvis(Integer avisId, AvisDecisionEnum decision) {
         Avis avisATraiter = avisRepository.findByAvisId(avisId);
         avisATraiter.setDecision(decision);
