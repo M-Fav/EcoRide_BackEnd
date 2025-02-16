@@ -50,7 +50,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Si l'URL est dans la liste des routes exemptées, on ignore le filtrage JWT
         String requestURI = request.getRequestURI();
         if (requestURI.startsWith("/login") || requestURI.startsWith("/register")
-                || requestURI.startsWith("/refresh_token") || requestURI.startsWith("/donneesEntreprise")) {
+                || requestURI.startsWith("/refresh_token") || requestURI.startsWith("/donneesEntreprise")
+                || requestURI.startsWith("/covoiturage/covoiturages")) {
             filterChain.doFilter(request, response);
             return;
         }

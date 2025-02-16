@@ -49,6 +49,9 @@ public class CovoiturageService {
                         lieuArrivee,
                         date,
                         0);
+
+        //TODO - Filtrer covoiturages pour ne pas remonter ceux auquel
+
         List<CovoiturageResponseDTO> listeCovoiturageResponseDTOS = CovoiturageMapper
                 .INSTANCE
                 .toListCovoiturageResponseDTO(listeCovoiturages);
