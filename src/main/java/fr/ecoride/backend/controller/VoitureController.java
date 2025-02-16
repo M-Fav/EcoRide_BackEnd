@@ -26,5 +26,11 @@ public class VoitureController {
         return voitureService.getAllVoitures();
     }
 
+    @GetMapping("/recupererVoituresUtilisateur")
+    public List<VoitureResponseDTO> getVoituresUtilisateur(
+            @RequestParam(defaultValue = "") Integer utilisateurId) {
+        return voitureService.getVoituresUtilisateur(utilisateurId);
+    }
+
 
 }

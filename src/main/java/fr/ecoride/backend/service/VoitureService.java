@@ -37,4 +37,19 @@ public class VoitureService {
                         voiture.getDatePremiereImmatriculation()))
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public List<VoitureResponseDTO> getVoituresUtilisateur(Integer utilisateurId) {
+        return voitureRepository.findByUtilisateurId(utilisateurId)
+                .stream()
+                .map(voiture -> new VoitureResponseDTO(
+                        voiture.getVoitureId(),
+                        voiture.getModele(),
+                        voiture.getCouleur(),
+                        voiture.getEnergie(),
+                        voiture.getMarque(),
+                        voiture.getImmatriculation(),
+                        voiture.getDatePremiereImmatriculation()))
+                .collect(Collectors.toList());
+    }
 }
