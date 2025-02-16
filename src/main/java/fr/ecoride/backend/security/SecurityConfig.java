@@ -48,7 +48,8 @@ public class SecurityConfig {
                                 "/login/**",
                                 "/register/**",
                                 "/refresh_token/**",
-                                "/donneesEntreprise/**").permitAll()
+                                "/donneesEntreprise/**",
+                                "/covoiturage/covoiturages/**").permitAll()
                         .requestMatchers(
                                 "/avis/getAvisATraiter",
                                 "avis/traiterAvis").hasAuthority(String.valueOf(UserRoleEnum.EMPLOYE.toString()))

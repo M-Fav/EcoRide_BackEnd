@@ -48,11 +48,14 @@ public class CovoiturageController {
     private static String TERMINATE_COVOITURAGE = "terminateCovoiturage";
 
     @GetMapping("/covoiturages")
-    public ResponseEntity findCovoiturages(@RequestBody Covoiturage request) {
+    public ResponseEntity findCovoiturages(
+            @RequestParam(defaultValue = "") String lieuDepart,
+            @RequestParam(defaultValue = "") String lieuArrivee,
+            @RequestParam(defaultValue = "") String date) {
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_DEBUT);
 
         List<CovoiturageResponseDTO> listeCovoiturageResponseDTO =  covoiturageService.findCovoiturages(
-                request.getLieuDepart(), request.getLieuArrivee(), request.getDate());
+                lieuDepart, lieuArrivee, date);
 
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_FIN);
         return ResponseEntity.ok(listeCovoiturageResponseDTO);
