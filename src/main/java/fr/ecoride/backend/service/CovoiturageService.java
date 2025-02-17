@@ -6,13 +6,16 @@ import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 import fr.ecoride.backend.mapper.CovoiturageMapper;
 import fr.ecoride.backend.model.Covoiturage;
 import fr.ecoride.backend.dto.covoiturage.CovoiturageResponseDTO;
+import fr.ecoride.backend.model.Covoitureur;
 import fr.ecoride.backend.repository.CovoiturageRepository;
+import fr.ecoride.backend.repository.CovoitureurRepository;
 import fr.ecoride.backend.utils.Constantes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,14 +25,17 @@ public class CovoiturageService {
 
     private final CovoiturageRepository covoiturageRepository;
 
+    private final CovoitureurRepository covoitureurRepository;
+
     private static String GET_COVOITURAGE = "getCovoiturage";
     private static String CREATE_COVOITURAGE = "createCovoiturage";
     private static String FIND_COVOITURAGES = "findCovoiturages";
     private static String DELETE_COVOITURAGE = "deleteCovoiturage";
     private static String UPDATE_STATUT_COVOITURAGE = "updateStatutCovoiturage";
 
-    public CovoiturageService(CovoiturageRepository covoiturageRepository) {
+    public CovoiturageService(CovoiturageRepository covoiturageRepository, CovoitureurRepository covoitureurRepository) {
         this.covoiturageRepository = covoiturageRepository;
+        this.covoitureurRepository = covoitureurRepository;
     }
 
     /**
@@ -41,20 +47,31 @@ public class CovoiturageService {
      * @return
      */
     @Transactional
-    public List<CovoiturageResponseDTO> findCovoiturages(String lieuDepart, String lieuArrivee, String date) {
+    public List<CovoiturageResponseDTO> findCovoiturages(Integer utilisateurId, String lieuDepart, String lieuArrivee, String date) {
         logger.debug(FIND_COVOITURAGES + Constantes.LOG_DEBUT);
+
+        List<Covoiturage> listeCovoituragesResponse = new ArrayList<>();
 
         List <Covoiturage> listeCovoiturages = covoiturageRepository
                 .findByLieuDepartAndLieuArriveeAndDateAndNbPlaceGreaterThan(lieuDepart,
                         lieuArrivee,
                         date,
                         0);
-
-        //TODO - Filtrer covoiturages pour ne pas remonter ceux auquel
+        if (utilisateurId != null) {
+            for (Covoiturage covoiturage : listeCovoiturages) {
+                Covoitureur covoitureur = covoitureurRepository.findByCovoiturageIdAndUtilisateurId(covoiturage.getCovoiturageId(), utilisateurId);
+                if (covoitureur == null) {
+                    listeCovoituragesResponse.add(covoiturage);
+                }
+            }
+        }
+        else {
+            listeCovoituragesResponse.addAll(listeCovoiturages);
+        }
 
         List<CovoiturageResponseDTO> listeCovoiturageResponseDTOS = CovoiturageMapper
                 .INSTANCE
-                .toListCovoiturageResponseDTO(listeCovoiturages);
+                .toListCovoiturageResponseDTO(listeCovoituragesResponse);
 
         logger.debug(FIND_COVOITURAGES + Constantes.LOG_FIN);
         return listeCovoiturageResponseDTOS;

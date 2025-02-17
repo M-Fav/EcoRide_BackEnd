@@ -51,16 +51,18 @@ public class CovoiturageController {
     public ResponseEntity findCovoiturages(
             @RequestParam(defaultValue = "") String lieuDepart,
             @RequestParam(defaultValue = "") String lieuArrivee,
-            @RequestParam(defaultValue = "") String date) {
+            @RequestParam(defaultValue = "") String date,
+            @RequestParam(defaultValue = "") Integer utilisateurId) {
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_DEBUT);
 
         List<CovoiturageResponseDTO> listeCovoiturageResponseDTO =  covoiturageService.findCovoiturages(
-                lieuDepart, lieuArrivee, date);
+                utilisateurId, lieuDepart, lieuArrivee, date);
 
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_FIN);
         return ResponseEntity.ok(listeCovoiturageResponseDTO);
     }
 
+    //pour l'historique des covoiturages d'un utilisateur
     @GetMapping("/covoituragesUtilisateur")
     public ResponseEntity findUtilisateurCovoiturages(@RequestBody UtilisateurRequestDTO utilisateurRequestDTO) {
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_DEBUT);
