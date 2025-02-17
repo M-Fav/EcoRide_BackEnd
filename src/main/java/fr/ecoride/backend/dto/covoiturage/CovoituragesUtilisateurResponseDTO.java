@@ -8,6 +8,7 @@ public class CovoituragesUtilisateurResponseDTO {
 
     private UtilisateurDetailsDTO conducteur;
 
+
     public CovoiturageResponseDTO getCovoiturage() {
         return covoiturage;
     }

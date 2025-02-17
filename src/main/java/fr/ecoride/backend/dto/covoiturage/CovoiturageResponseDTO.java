@@ -21,8 +21,9 @@ public class CovoiturageResponseDTO {
     private String statut;
     private int nbPlace;
     private float prixPersonne;
+    private Integer conducteurId;
 
-    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne, Integer conducteurId) {
         this.covoiturageId = covoiturageId;
         this.date = date;
         this.heureDepart = heureDepart;
@@ -31,6 +32,7 @@ public class CovoiturageResponseDTO {
         this.statut = statut;
         this.nbPlace = nbPlace;
         this.prixPersonne = prixPersonne;
+        this.conducteurId = conducteurId;
     }
 
     public Integer getCovoiturageId() {
@@ -95,5 +97,12 @@ public class CovoiturageResponseDTO {
 
     public void setPrixPersonne(float prixPersonne) {
         this.prixPersonne = prixPersonne;
+    }
+
+    public Integer getConducteurId() {
+        return conducteurId;
+    }
+    public void setConducteurId(Integer conducteurId) {
+        this.conducteurId = conducteurId;
     }
 }
