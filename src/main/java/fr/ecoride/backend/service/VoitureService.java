@@ -3,7 +3,6 @@ package fr.ecoride.backend.service;
 import fr.ecoride.backend.dto.voiture.VoitureRequestDTO;
 import fr.ecoride.backend.dto.voiture.VoitureResponseDTO;
 import fr.ecoride.backend.mapper.VoitureMapper;
-import fr.ecoride.backend.model.Voiture;
 import fr.ecoride.backend.repository.VoitureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,11 +29,11 @@ public class VoitureService {
                 .map(voiture -> new VoitureResponseDTO(
                         voiture.getVoitureId(),
                         voiture.getModele(),
-                        voiture.getCouleur(),
-                        voiture.getEnergie(),
-                        voiture.getMarque(),
                         voiture.getImmatriculation(),
-                        voiture.getDatePremiereImmatriculation()))
+                        voiture.getEnergie(),
+                        voiture.getCouleur(),
+                        voiture.getDatePremiereImmatriculation(),
+                        voiture.getMarque()))
                 .collect(Collectors.toList());
     }
 
@@ -45,11 +44,11 @@ public class VoitureService {
                 .map(voiture -> new VoitureResponseDTO(
                         voiture.getVoitureId(),
                         voiture.getModele(),
-                        voiture.getCouleur(),
-                        voiture.getEnergie(),
-                        voiture.getMarque(),
                         voiture.getImmatriculation(),
-                        voiture.getDatePremiereImmatriculation()))
+                        voiture.getEnergie(),
+                        voiture.getCouleur(),
+                        voiture.getDatePremiereImmatriculation(),
+                        voiture.getMarque()))
                 .collect(Collectors.toList());
     }
 }
