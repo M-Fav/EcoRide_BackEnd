@@ -1,13 +1,16 @@
 package fr.ecoride.backend.controller;
 
 import fr.ecoride.backend.dto.covoitureur.CovoitureurRequestDTO;
+import fr.ecoride.backend.dto.covoitureur.CovoitureurResponseDTO;
 import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 import fr.ecoride.backend.enums.CovoitureurRoleEnum;
+import fr.ecoride.backend.mapper.CovoitureurMapper;
 import fr.ecoride.backend.model.Covoitureur;
 import fr.ecoride.backend.service.CovoiturageService;
 import fr.ecoride.backend.service.CovoitureurService;
 import fr.ecoride.backend.service.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -65,4 +68,16 @@ public class CovoitureurController {
                     CovoiturageStatutEnum.VALIDE);
         }
     }
+
+    @GetMapping("/findCovoitureurOfUtilisateur")
+    public ResponseEntity findCovoitureurOfUtilisateur(
+            @RequestParam(defaultValue = "") Integer utilisateurId,
+            @RequestParam(defaultValue = "") Integer covoiturageId)
+    {
+
+        Covoitureur covoitureur = covoitureurService.findCovoitureurOfUtilisateur(utilisateurId, covoiturageId);
+        CovoitureurResponseDTO covoitureurResponseDTO = CovoitureurMapper.INSTANCE.toCovoitureurResponse(covoitureur);
+        return ResponseEntity.ok(covoitureurResponseDTO);
+    }
+
 }

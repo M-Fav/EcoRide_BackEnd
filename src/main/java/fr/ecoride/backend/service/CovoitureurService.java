@@ -34,6 +34,7 @@ public class CovoitureurService {
     private static String SEND_EMAIL_VALIDATION_COVOITUREUR = "sendEmailValidationCovoitureur";
     private static String VALIDATE_COVOITURAGE = "validateCovoiturage";
     private static String GET_COVOITUREURS_OF_UTILISATEUR = "getCovoitureursOfUtilisateur";
+    private static String FIND_COVOITUREUR_OF_UTILISATEUR= "findCovoitureurOfUtilisateur";
 
     public CovoitureurService(CovoitureurRepository covoitureurRepository, CovoiturageRepository covoiturageRepository, UserDetailsServiceImp userDetailsServiceImp, UserRepository userRepository, EmailService emailService) {
         this.covoitureurRepository = covoitureurRepository;
@@ -183,5 +184,15 @@ public class CovoitureurService {
 
         logger.debug(GET_COVOITUREURS_OF_UTILISATEUR + Constantes.LOG_FIN);
         return listeCovoitureur;
+    }
+
+    @Transactional
+    public Covoitureur findCovoitureurOfUtilisateur(Integer utilisateurId, Integer covoiturageId) {
+        logger.debug(FIND_COVOITUREUR_OF_UTILISATEUR + Constantes.LOG_DEBUT);
+
+        Covoitureur covoitureur = covoitureurRepository.findByCovoiturageIdAndUtilisateurId(covoiturageId, utilisateurId);
+
+        logger.debug(FIND_COVOITUREUR_OF_UTILISATEUR + Constantes.LOG_FIN);
+        return covoitureur;
     }
 }

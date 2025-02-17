@@ -22,8 +22,9 @@ public class CovoiturageResponseDTO {
     private int nbPlace;
     private float prixPersonne;
     private Integer conducteurId;
+    private boolean validationCovoiturage;
 
-    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne, Integer conducteurId) {
+    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne, Integer conducteurId, boolean validationCovoiturage) {
         this.covoiturageId = covoiturageId;
         this.date = date;
         this.heureDepart = heureDepart;
@@ -33,6 +34,7 @@ public class CovoiturageResponseDTO {
         this.nbPlace = nbPlace;
         this.prixPersonne = prixPersonne;
         this.conducteurId = conducteurId;
+        this.validationCovoiturage = validationCovoiturage;
     }
 
     public Integer getCovoiturageId() {
@@ -104,5 +106,13 @@ public class CovoiturageResponseDTO {
     }
     public void setConducteurId(Integer conducteurId) {
         this.conducteurId = conducteurId;
+    }
+
+    public boolean isValidationCovoiturage() {
+        return validationCovoiturage;
+    }
+
+    public void setValidationCovoiturage(boolean validationCovoiturage) {
+        this.validationCovoiturage = validationCovoiturage;
     }
 }
