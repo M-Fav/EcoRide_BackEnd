@@ -1,5 +1,6 @@
 package fr.ecoride.backend.service;
 
+import fr.ecoride.backend.enums.UserRoleEnum;
 import fr.ecoride.backend.enums.UserStatutEnum;
 import fr.ecoride.backend.exception.CustomException;
 import fr.ecoride.backend.model.User;
@@ -10,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
@@ -76,6 +79,16 @@ public class UserDetailsServiceImp implements UserDetailsService {
     public User getUser(Integer utilisateurId){
         // On récupère l'utilisateur
         return userRepository.findByUtilisateurId(utilisateurId);
+    }
+
+    /**
+     * Permet de trouver la liste des utilisateur pour un role
+     * @param role
+     * @return liste des user du role entrée
+     */
+    @Transactional
+    public List<User> getUsersByRole(UserRoleEnum role) {
+        return userRepository.findByRole(role);
     }
 
     /**
