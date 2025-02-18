@@ -1,6 +1,7 @@
 package fr.ecoride.backend.dto.utilisateur;
 
 import fr.ecoride.backend.enums.UserRoleEnum;
+import fr.ecoride.backend.enums.UserStatutEnum;
 
 public class UtilisateurDetailsDTO {
 
@@ -13,6 +14,8 @@ public class UtilisateurDetailsDTO {
     private String prenom;
 
     private UserRoleEnum role;
+
+    private UserStatutEnum statut;
 
     public Integer getUtilisateurId() {
         return utilisateurId;
@@ -52,5 +55,13 @@ public class UtilisateurDetailsDTO {
 
     public void setRole(UserRoleEnum role) {
         this.role = role;
+    }
+
+    public UserStatutEnum getStatut() {
+        return statut;
+    }
+
+    public void setStatut(UserStatutEnum statut) {
+        this.statut = statut;
     }
 }
