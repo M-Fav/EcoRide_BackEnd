@@ -56,7 +56,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "utilisateur/gererStatutUtilisateur",
                                 "employe/createEmploye",
-                                "utilisateur/findUtilisateurEmploye").hasAuthority(String.valueOf(UserRoleEnum.ADMINISTRATEUR.toString()))
+                                "utilisateur/findUtilisateurEmploye",
+                                "/statistiques/getStatistiquesForAPeriode").hasAuthority(String.valueOf(UserRoleEnum.ADMINISTRATEUR.toString()))
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsServiceImp)
