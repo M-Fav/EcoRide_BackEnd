@@ -98,6 +98,7 @@ public class CovoiturageController {
                 covoituragesUtilisateurDTO.setConducteur(utilisateurDetails);
                 Covoitureur covoitureurOfCovoiturage = covoitureurService.findCovoitureurOfUtilisateur(utilisateurId,covoiturage.getCovoiturageId());
                 covoituragesUtilisateurDTO.getCovoiturage().setValidationCovoiturage(covoitureurOfCovoiturage.isValidationCovoiturage());
+                covoituragesUtilisateurDTO.getCovoiturage().setCovoitureurId(covoitureurOfCovoiturage.getCovoitureurId());
 
                 listeCovoituragesUtilisateurDTO.add(covoituragesUtilisateurDTO);
             }

@@ -1,15 +1,6 @@
 package fr.ecoride.backend.dto.covoiturage;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 public class CovoiturageResponseDTO {
 
@@ -23,8 +14,9 @@ public class CovoiturageResponseDTO {
     private float prixPersonne;
     private Integer conducteurId;
     private boolean validationCovoiturage;
+    private Integer covoitureurId;
 
-    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne, Integer conducteurId, boolean validationCovoiturage) {
+    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne, Integer conducteurId, boolean validationCovoiturage, Integer covoitureurId) {
         this.covoiturageId = covoiturageId;
         this.date = date;
         this.heureDepart = heureDepart;
@@ -35,6 +27,7 @@ public class CovoiturageResponseDTO {
         this.prixPersonne = prixPersonne;
         this.conducteurId = conducteurId;
         this.validationCovoiturage = validationCovoiturage;
+        this.covoitureurId = covoitureurId;
     }
 
     public Integer getCovoiturageId() {
@@ -114,5 +107,13 @@ public class CovoiturageResponseDTO {
 
     public void setValidationCovoiturage(boolean validationCovoiturage) {
         this.validationCovoiturage = validationCovoiturage;
+    }
+
+    public Integer getCovoitureurId() {
+        return covoitureurId;
+    }
+
+    public void setCovoitureurId(Integer covoitureurId) {
+        this.covoitureurId = covoitureurId;
     }
 }
