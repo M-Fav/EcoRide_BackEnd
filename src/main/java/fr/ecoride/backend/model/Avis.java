@@ -19,7 +19,7 @@ public class Avis {
     @Column(name = "decision")
     private AvisDecisionEnum decision;
     @Column(name = "covoitureur_id")
-    private String covoitureurId;
+    private Integer covoitureurId;
 
     public Avis() {}
 
@@ -55,11 +55,11 @@ public class Avis {
         this.decision = decision;
     }
 
-    public String getCovoitureurId() {
+    public Integer getCovoitureurId() {
         return covoitureurId;
     }
 
-    public void setCovoitureurId(String covoitureurId) {
+    public void setCovoitureurId(Integer covoitureurId) {
         this.covoitureurId = covoitureurId;
     }
 }
