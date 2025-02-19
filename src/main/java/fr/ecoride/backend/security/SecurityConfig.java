@@ -52,7 +52,8 @@ public class SecurityConfig {
                                 "/covoiturage/covoiturages/**").permitAll()
                         .requestMatchers(
                                 "/avis/getAvisATraiter",
-                                "avis/traiterAvis").hasAuthority(String.valueOf(UserRoleEnum.EMPLOYE.toString()))
+                                "avis/traiterAvis").hasAnyAuthority(String.valueOf(UserRoleEnum.EMPLOYE.toString()),
+                                                                    String.valueOf(UserRoleEnum.ADMINISTRATEUR.toString()))
                         .requestMatchers(
                                 "utilisateur/gererStatutUtilisateur",
                                 "employe/createEmploye",
