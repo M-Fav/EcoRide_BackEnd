@@ -89,8 +89,8 @@ CREATE TABLE IF NOT EXISTS avis (
         REFERENCES covoitureur(covoitureur_id) ON DELETE cascade
 );
 
--- Création de la table "donnee_entreprise"
-CREATE TABLE IF NOT EXISTS donnee_entreprise (
+-- Création de la table "donnees_entreprise"
+CREATE TABLE IF NOT EXISTS donnees_entreprise (
 	donnee_entreprise_id INT AUTO_INCREMENT PRIMARY KEY,
 	libelle VARCHAR(50) not NULL,
 	valeur VARCHAR(500) not NULL
@@ -118,7 +118,7 @@ BEGIN
     DECLARE today_date VARCHAR(10);
 
     -- Obtenir la date actuelle au format 'YYYY-MM-DD'
-    SET today_date = DATE_FORMAT(NOW(), '%Y-%m-%d');
+    SET today_date = DATE_FORMAT(NOW(), '%d-%m-%Y');
 
     IF NEW.statut = 'VALIDE' AND OLD.statut <> 'VALIDE' THEN
 

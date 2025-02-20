@@ -1,29 +1,25 @@
-package fr.ecoride.backend.model;
+package fr.ecoride.backend.dto.statistique;
+
 
 import fr.ecoride.backend.enums.AvisDecisionEnum;
-import jakarta.persistence.*;
 
-@Entity
-@Table(name = "avis")
-public class Avis {
+public class StatistiqueRequestDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "avis_id")
     private Integer avisId;
-    @Column(name = "commentaire")
     private String commentaire;
-    @Column(name = "note")
     private String note;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "decision")
     private AvisDecisionEnum decision;
-    @Column(name = "covoitureur_id")
     private Integer covoitureurId;
 
-    public Avis() {}
+    public StatistiqueRequestDTO(Integer avisId, String commentaire, String note, AvisDecisionEnum decision, Integer covoitureurId) {
+        this.avisId = avisId;
+        this.commentaire = commentaire;
+        this.note = note;
+        this.decision = decision;
+        this.covoitureurId = covoitureurId;
+    }
 
-    public long getAvisId() {
+    public Integer getAvisId() {
         return avisId;
     }
 

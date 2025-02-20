@@ -16,4 +16,6 @@ public interface AvisMapper {
     Avis toAvis(AvisRequestDTO avisRequestDTO);
 
     List<AvisResponseDTO> toListAvisResponseDTO(List<Avis> avisList);
+
+    AvisResponseDTO toAvisResponseDTO(Avis avis);
 }

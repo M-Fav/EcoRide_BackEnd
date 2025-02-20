@@ -5,19 +5,16 @@ import fr.ecoride.backend.enums.CovoitureurRoleEnum;
 
 public class CovoitureurResponseDTO {
 
-    @JsonProperty("role")
     private CovoitureurRoleEnum role;
-
-    @JsonProperty("utilisateur_id")
     private Integer utilisateurId;
-
-    @JsonProperty("covoiturage_id")
     private Integer covoiturageId;
+    private boolean validationCovoiturage;
 
-    public CovoitureurResponseDTO(CovoitureurRoleEnum role, Integer utilisateurId, Integer covoiturageId) {
+    public CovoitureurResponseDTO(CovoitureurRoleEnum role, Integer utilisateurId, Integer covoiturageId, boolean validationCovoiturage) {
         this.role = role;
         this.utilisateurId = utilisateurId;
         this.covoiturageId = covoiturageId;
+        this.validationCovoiturage = validationCovoiturage;
     }
 
     public CovoitureurRoleEnum getRole() {
@@ -42,5 +39,13 @@ public class CovoitureurResponseDTO {
 
     public void setCovoiturageId(Integer covoiturageId) {
         this.covoiturageId = covoiturageId;
+    }
+
+    public boolean getValidationCovoiturage() {
+        return validationCovoiturage;
+    }
+
+    public void setValidationCovoiturage(boolean validationCovoiturage) {
+        this.validationCovoiturage = validationCovoiturage;
     }
 }

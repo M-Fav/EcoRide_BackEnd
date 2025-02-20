@@ -1,38 +1,33 @@
 package fr.ecoride.backend.dto.covoiturage;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 public class CovoiturageResponseDTO {
 
     private Integer covoiturageId;
     private String date;
     private LocalTime heureDepart;
-    private LocalTime duree;
     private String lieuDepart;
     private String lieuArrivee;
     private String statut;
     private int nbPlace;
     private float prixPersonne;
+    private Integer conducteurId;
+    private boolean validationCovoiturage;
+    private Integer covoitureurId;
 
-    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, LocalTime duree, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne) {
+    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne, Integer conducteurId, boolean validationCovoiturage, Integer covoitureurId) {
         this.covoiturageId = covoiturageId;
         this.date = date;
         this.heureDepart = heureDepart;
-        this.duree = duree;
         this.lieuDepart = lieuDepart;
         this.lieuArrivee = lieuArrivee;
         this.statut = statut;
         this.nbPlace = nbPlace;
         this.prixPersonne = prixPersonne;
+        this.conducteurId = conducteurId;
+        this.validationCovoiturage = validationCovoiturage;
+        this.covoitureurId = covoitureurId;
     }
 
     public Integer getCovoiturageId() {
@@ -57,14 +52,6 @@ public class CovoiturageResponseDTO {
 
     public void setHeureDepart(LocalTime heureDepart) {
         this.heureDepart = heureDepart;
-    }
-
-    public LocalTime getDuree() {
-        return duree;
-    }
-
-    public void setDuree(LocalTime duree) {
-        this.duree = duree;
     }
 
     public String getLieuDepart() {
@@ -105,5 +92,28 @@ public class CovoiturageResponseDTO {
 
     public void setPrixPersonne(float prixPersonne) {
         this.prixPersonne = prixPersonne;
+    }
+
+    public Integer getConducteurId() {
+        return conducteurId;
+    }
+    public void setConducteurId(Integer conducteurId) {
+        this.conducteurId = conducteurId;
+    }
+
+    public boolean isValidationCovoiturage() {
+        return validationCovoiturage;
+    }
+
+    public void setValidationCovoiturage(boolean validationCovoiturage) {
+        this.validationCovoiturage = validationCovoiturage;
+    }
+
+    public Integer getCovoitureurId() {
+        return covoitureurId;
+    }
+
+    public void setCovoitureurId(Integer covoitureurId) {
+        this.covoitureurId = covoitureurId;
     }
 }

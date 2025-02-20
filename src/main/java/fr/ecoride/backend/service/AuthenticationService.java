@@ -20,9 +20,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -51,6 +51,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
+    @Transactional
     public AuthenticationResponse register(User request) {
         logger.debug(REGISTER);
 
@@ -75,6 +76,7 @@ public class AuthenticationService {
         return new AuthenticationResponse(accessToken, refreshToken,"L'utilisateur a bien été enregistré", utilisateurResponseDTO);
     }
 
+    @Transactional
     public AuthenticationResponse authenticate(User request) {
         logger.debug(LOGIN + Constantes.LOG_DEBUT);
 
@@ -102,6 +104,8 @@ public class AuthenticationService {
         logger.debug(LOGIN + Constantes.LOG_FIN);
         return new AuthenticationResponse(accessToken, refreshToken, "Connexion utilisateur réussie", utilisateurResponseDTO);
     }
+
+    @Transactional
     private void revokeAllTokenByUser(User user) {
         List<Token> validTokens = tokenRepository.findByUtilisateurId(user.getUtilisateurId());
         if(validTokens.isEmpty()) {
@@ -114,6 +118,8 @@ public class AuthenticationService {
 
         tokenRepository.saveAll(validTokens);
     }
+
+    @Transactional
     private void saveUserToken(String accessToken, String refreshToken, User user) {
         Token token = new Token();
         token.setAccessToken(accessToken);
@@ -123,6 +129,7 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
+    @Transactional
     public ResponseEntity refreshToken(HttpServletRequest request, HttpServletResponse response) {
         logger.debug(REFRESH_TOKEN);
 

@@ -1,16 +1,16 @@
 spring:
   datasource:
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://fnjv44kcr8ym4e3e:nm7i2x00jsuv7obm@e7qyahb3d90mletd.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/v6eqjfqi1n8d9orn
+    username: fnjv44kcr8ym4e3e
+    password: nm7i2x00jsuv7obm
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       maximum-pool-size: 5       # Nombre max de connexions simultanées
       minimum-idle: 2            # Nombre min de connexions inactives
       idle-timeout: 10000        # Ferme une connexion inactive après 10s
-      max-lifetime: 60000        # Durée max d’une connexion avant fermeture (60s)
-      connection-timeout: 30000  # Timeout max pour obtenir une connexion (30s)
+      max-lifetime: 20000        # Durée max d’une connexion avant fermeture (20s)
+      connection-timeout: 10000  # Timeout max pour obtenir une connexion (10s)
   jpa:
     hibernate:
       ddl-auto: none

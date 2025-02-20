@@ -12,5 +12,7 @@ public interface CovoitureurRepository extends JpaRepository<Covoitureur, Intege
 
     List<Covoitureur> findByUtilisateurId(Integer utilisateurId);
 
+    Covoitureur findByCovoiturageIdAndUtilisateurId(Integer covoiturageId, Integer utilisateurId);
+
     Covoitureur findByUtilisateurIdAndCovoiturageId(Integer utilisateurId, Integer covoiturageId);
 }

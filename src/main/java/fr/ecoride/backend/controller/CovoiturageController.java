@@ -3,9 +3,9 @@ package fr.ecoride.backend.controller;
 import fr.ecoride.backend.dto.covoiturage.CovoiturageRequestDTO;
 import fr.ecoride.backend.dto.covoiturage.CovoiturageResponseDTO;
 import fr.ecoride.backend.dto.covoiturage.CovoituragesUtilisateurResponseDTO;
+import fr.ecoride.backend.dto.covoiturage.GetCovoiturageUtilisateurResponseDTO;
 import fr.ecoride.backend.dto.covoitureur.CovoitureurRequestDTO;
 import fr.ecoride.backend.dto.utilisateur.UtilisateurDetailsDTO;
-import fr.ecoride.backend.dto.utilisateur.UtilisateurRequestDTO;
 import fr.ecoride.backend.email.EmailService;
 import fr.ecoride.backend.enums.CovoiturageStatutEnum;
 import fr.ecoride.backend.enums.CovoitureurRoleEnum;
@@ -51,22 +51,26 @@ public class CovoiturageController {
     public ResponseEntity findCovoiturages(
             @RequestParam(defaultValue = "") String lieuDepart,
             @RequestParam(defaultValue = "") String lieuArrivee,
-            @RequestParam(defaultValue = "") String date) {
+            @RequestParam(defaultValue = "") String date,
+            @RequestParam(defaultValue = "") Integer utilisateurId) {
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_DEBUT);
 
         List<CovoiturageResponseDTO> listeCovoiturageResponseDTO =  covoiturageService.findCovoiturages(
-                lieuDepart, lieuArrivee, date);
+                utilisateurId, lieuDepart, lieuArrivee, date);
 
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_FIN);
         return ResponseEntity.ok(listeCovoiturageResponseDTO);
     }
 
-    @GetMapping("/covoituragesUtilisateur")
-    public ResponseEntity findUtilisateurCovoiturages(@RequestBody UtilisateurRequestDTO utilisateurRequestDTO) {
+    //pour l'historique des covoiturages d'un utilisateur
+    @GetMapping("/getCovoituragesUtilisateur")
+    public ResponseEntity findUtilisateurCovoiturages(
+            @RequestParam(defaultValue = "") Integer utilisateurId) {
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_DEBUT);
+        GetCovoiturageUtilisateurResponseDTO getCovoiturageUtilisateurResponseDTO = new GetCovoiturageUtilisateurResponseDTO();
 
         //On récupère la liste des covoitureurs liés à l'utilisateur
-        List<Covoitureur> listeCovoitureur = covoitureurService.getCovoitureursOfUtilisateur(utilisateurRequestDTO.getUtilisateurId());
+        List<Covoitureur> listeCovoitureur = covoitureurService.getCovoitureursOfUtilisateur(utilisateurId);
 
         //On récupère la liste des covoiturage liés aux covoitureurs
         List<CovoituragesUtilisateurResponseDTO> listeCovoituragesUtilisateurDTO = new ArrayList<CovoituragesUtilisateurResponseDTO>();
@@ -83,21 +87,51 @@ public class CovoiturageController {
                 //Ajout du covoiturage à l'occurence en sortie
                 covoituragesUtilisateurDTO.setCovoiturage(CovoiturageMapper.INSTANCE.toCovoiturageResponseDTO(covoiturage));
 
-                    User utilisateur = userDetailsServiceImp.getUser(covoiturage.getConducteurId());
+                User utilisateur = userDetailsServiceImp.getUser(covoiturage.getConducteurId());
 
-                    UtilisateurDetailsDTO utilisateurDetails = new UtilisateurDetailsDTO();
-                    utilisateurDetails.setNom(utilisateur.getNom());
-                    utilisateurDetails.setPrenom(utilisateur.getPrenom());
-                    utilisateurDetails.setPseudo(utilisateur.getPseudo());
-                    utilisateurDetails.setUtilisateurId(utilisateur.getUtilisateurId());
+                UtilisateurDetailsDTO utilisateurDetails = new UtilisateurDetailsDTO();
+                utilisateurDetails.setNom(utilisateur.getNom());
+                utilisateurDetails.setPrenom(utilisateur.getPrenom());
+                utilisateurDetails.setPseudo(utilisateur.getPseudo());
+                utilisateurDetails.setUtilisateurId(utilisateur.getUtilisateurId());
 
-                    covoituragesUtilisateurDTO.setConducteur(utilisateurDetails);
+                covoituragesUtilisateurDTO.setConducteur(utilisateurDetails);
+                Covoitureur covoitureurOfCovoiturage = covoitureurService.findCovoitureurOfUtilisateur(utilisateurId,covoiturage.getCovoiturageId());
+                covoituragesUtilisateurDTO.getCovoiturage().setValidationCovoiturage(covoitureurOfCovoiturage.isValidationCovoiturage());
+                covoituragesUtilisateurDTO.getCovoiturage().setCovoitureurId(covoitureurOfCovoiturage.getCovoitureurId());
+
                 listeCovoituragesUtilisateurDTO.add(covoituragesUtilisateurDTO);
             }
         }
 
+        //On veut faire deux listes de covoiturage selon le statut pour l'espace utilisateur
+        // premier tri : ACTIF ou EN_COURS
+        List<CovoituragesUtilisateurResponseDTO> listeCovoituragesEnCours = listeCovoituragesUtilisateurDTO.stream()
+                .filter(d -> d.getCovoiturage().getStatut().equals("ACTIF") ||
+                        d.getCovoiturage().getStatut().equals("EN_COURS") ||
+                        d.getCovoiturage().getStatut().equals("TERMINE"))
+                .toList();
+        List<CovoiturageResponseDTO> covoiturageEnCoursResponseDTOList = new ArrayList<>();
+        for (CovoituragesUtilisateurResponseDTO covoituragesUtilisateurResponseDTO : listeCovoituragesEnCours) {
+            covoiturageEnCoursResponseDTOList.add(covoituragesUtilisateurResponseDTO.getCovoiturage());
+        }
+
+        //notre objet qui contiendra les deux listes
+        getCovoiturageUtilisateurResponseDTO.setListeCovoituragesEnCours(covoiturageEnCoursResponseDTOList);
+
+        // Deuxième tri : VALIDE
+        List<CovoituragesUtilisateurResponseDTO> listeCovoituragesPasses = listeCovoituragesUtilisateurDTO.stream()
+                .filter(d -> d.getCovoiturage().getStatut().equals("VALIDE"))
+                .toList();
+        List<CovoiturageResponseDTO> covoituragePasseResponseDTOList = new ArrayList<>();
+        for (CovoituragesUtilisateurResponseDTO covoituragesUtilisateurResponseDTO : listeCovoituragesPasses) {
+            covoituragePasseResponseDTOList.add(covoituragesUtilisateurResponseDTO.getCovoiturage());
+        }
+
+        getCovoiturageUtilisateurResponseDTO.setListeCovoituragesPasses(covoituragePasseResponseDTOList);
+
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_FIN);
-        return ResponseEntity.ok(listeCovoituragesUtilisateurDTO);
+        return ResponseEntity.ok(getCovoiturageUtilisateurResponseDTO);
     }
 
     @PostMapping("/createCovoiturage")

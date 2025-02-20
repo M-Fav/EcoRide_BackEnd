@@ -9,13 +9,17 @@ public class AvisResponseDTO {
     private String note;
     private AvisDecisionEnum decision;
     private Integer covoitureurId;
+    private String nom;
+    private String prenom;
 
-    public AvisResponseDTO(Integer avisId, String commentaire, String note, AvisDecisionEnum decision, Integer covoitureurId) {
+    public AvisResponseDTO(Integer avisId, String commentaire, String note, AvisDecisionEnum decision, Integer covoitureurId, String nom, String prenom) {
         this.avisId = avisId;
         this.commentaire = commentaire;
         this.note = note;
         this.decision = decision;
         this.covoitureurId = covoitureurId;
+        this.nom = nom;
+        this.prenom = prenom;
     }
 
     public String getCommentaire() {
@@ -56,5 +60,21 @@ public class AvisResponseDTO {
 
     public void setAvisId(Integer avisId) {
         this.avisId = avisId;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 }
