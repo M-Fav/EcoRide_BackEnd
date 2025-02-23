@@ -3,6 +3,7 @@ package fr.ecoride.backend.service;
 
 import fr.ecoride.backend.controller.AuthenticationController;
 import fr.ecoride.backend.dto.utilisateur.UtilisateurResponseDTO;
+import fr.ecoride.backend.enums.UserStatutEnum;
 import fr.ecoride.backend.exception.CustomException;
 import fr.ecoride.backend.mapper.UtilisateurMapper;
 import fr.ecoride.backend.model.*;
@@ -85,6 +86,12 @@ public class AuthenticationService {
                     logger.error("Utilisateur non trouvé avec le pseudo : {}", request.getUsername());
                     return new CustomException("Utilisateur non trouvé", HttpStatus.NOT_FOUND);
                 });
+
+        //Controle si l'utilisateur est suspendu
+        if (user.getStatut().equals(UserStatutEnum.SUSPENDU)) {
+            logger.error("Utilisateur suspendu (pseudo : {})", request.getUsername());
+            throw new CustomException("Votre compte est suspendu", HttpStatus.FORBIDDEN);
+        }
 
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
