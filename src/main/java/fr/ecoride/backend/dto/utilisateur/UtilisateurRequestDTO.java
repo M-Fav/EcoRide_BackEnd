@@ -11,6 +11,8 @@ public class UtilisateurRequestDTO {
 
     private String pseudo;
 
+    private Integer credit;
+
     public Integer getUtilisateurId() {
         return utilisateurId;
     }
@@ -33,5 +35,13 @@ public class UtilisateurRequestDTO {
 
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
+    }
+
+    public Integer getCredit() {
+        return credit;
+    }
+
+    public void setCredit(Integer credit) {
+        this.credit = credit;
     }
 }

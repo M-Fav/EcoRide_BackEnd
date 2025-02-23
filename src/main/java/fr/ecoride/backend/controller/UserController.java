@@ -50,4 +50,11 @@ public class UserController {
 
         return ResponseEntity.ok(utilisateurResponseDTO);
     }
+
+    @PutMapping("/ajouterCredit")
+    public void ajouterCredit(@RequestBody UtilisateurRequestDTO utilisateurRequestDTO) {
+
+        userDetailsServiceImp.ajouterCredit(utilisateurRequestDTO.getUtilisateurId(),
+                utilisateurRequestDTO.getCredit());
+    }
 }

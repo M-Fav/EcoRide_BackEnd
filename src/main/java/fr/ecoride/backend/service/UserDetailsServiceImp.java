@@ -104,4 +104,12 @@ public class UserDetailsServiceImp implements UserDetailsService {
         user.setStatut(statut);
         userRepository.save(user);
     }
+
+    @Transactional
+    public void ajouterCredit(Integer utilisateurId, float credit) {
+        User user = userRepository.findByUtilisateurId(utilisateurId);
+
+        user.setCredit(user.getCredit() + credit);
+        userRepository.save(user);
+    }
 }
