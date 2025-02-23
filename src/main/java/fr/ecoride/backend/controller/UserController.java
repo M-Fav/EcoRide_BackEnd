@@ -56,6 +56,5 @@ public class UserController {
 
         userDetailsServiceImp.ajouterCredit(utilisateurRequestDTO.getUtilisateurId(),
                 utilisateurRequestDTO.getCredit());
-
     }
 }
