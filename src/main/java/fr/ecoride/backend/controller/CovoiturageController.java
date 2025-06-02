@@ -138,12 +138,14 @@ public class CovoiturageController {
     public void createCovoiturage(@RequestBody CovoiturageRequestDTO covoiturageRequestDTO) {
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_DEBUT);
 
-        //On créer le covoiturage
+        //On créer le covoiturage via le service
         Integer covoiturageId = covoiturageService.createCovoiturage(covoiturageRequestDTO);
-        CovoitureurRequestDTO covoitureurRequestDTO = new CovoitureurRequestDTO(covoiturageRequestDTO.getCovoiturageId(), CovoitureurRoleEnum.CONDUCTEUR,
-                covoiturageRequestDTO.getUtilisateurId(), covoiturageId, true);
 
         //On créer l'utilisateur comme covoitureur CONDUCTEUR du covoiturage
+        CovoitureurRequestDTO covoitureurRequestDTO = new CovoitureurRequestDTO(covoiturageRequestDTO.getCovoiturageId(),
+                CovoitureurRoleEnum.CONDUCTEUR,
+                covoiturageRequestDTO.getUtilisateurId(), covoiturageId, true);
+
         covoitureurService.createCovoitureur(covoitureurRequestDTO);
 
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_FIN);

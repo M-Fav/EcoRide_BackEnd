@@ -20,7 +20,9 @@ public class CovoiturageRequestDTO {
     private int nbPlace;
     private float prixPersonne;
 
-    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, String date, LocalTime heureDepart, String lieuDepart, String lieuArrivee, CovoiturageStatutEnum statut, int nbPlace, float prixPersonne) {
+    public CovoiturageRequestDTO(Integer covoiturageId, Integer voitureId, Integer utilisateurId, String date,
+                                 LocalTime heureDepart, String lieuDepart, String lieuArrivee,
+                                 CovoiturageStatutEnum statut, int nbPlace, float prixPersonne) {
         this.covoiturageId = covoiturageId;
         this.voitureId = voitureId;
         this.utilisateurId = utilisateurId;

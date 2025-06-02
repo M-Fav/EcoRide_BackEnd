@@ -16,7 +16,9 @@ public class CovoiturageResponseDTO {
     private boolean validationCovoiturage;
     private Integer covoitureurId;
 
-    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, String lieuDepart, String lieuArrivee, String statut, int nbPlace, float prixPersonne, Integer conducteurId, boolean validationCovoiturage, Integer covoitureurId) {
+    public CovoiturageResponseDTO(Integer covoiturageId, String date, LocalTime heureDepart, String lieuDepart,
+                                  String lieuArrivee, String statut, int nbPlace, float prixPersonne,
+                                  Integer conducteurId, boolean validationCovoiturage, Integer covoitureurId) {
         this.covoiturageId = covoiturageId;
         this.date = date;
         this.heureDepart = heureDepart;
