@@ -87,7 +87,7 @@ public class CovoiturageService {
     public Integer createCovoiturage(CovoiturageRequestDTO covoiturageRequestDTO) {
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_DEBUT);
 
-        //On initi le statut à ACTIF lors de la création
+        //On initie le statut à ACTIF lors de la création
         Covoiturage covoiturage = CovoiturageMapper.INSTANCE.toCovoiturage(covoiturageRequestDTO);
         covoiturage.setStatut(CovoiturageStatutEnum.ACTIF);
 

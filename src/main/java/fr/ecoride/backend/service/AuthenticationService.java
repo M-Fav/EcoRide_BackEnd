@@ -58,29 +58,33 @@ public class AuthenticationService {
 
         // On controle si le User existe. s'il existe on l'authentifie
         if(userRepository.findByPseudo(request.getPseudo()).isPresent()) {
-            return new AuthenticationResponse(null, null,"L'utilisateur existe déjà", null);
+            return new AuthenticationResponse(null, null,
+                    "L'utilisateur existe déjà", null);
         }
-
+        //Encodage du mot de passe
         User user = request;
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        //Offre les 20 crédits d'inscription
         user.setCredit(Constantes.CREDIT_INSCRIPTION);
+        //Enregistre le nouvel utilisateur en base
         userRepository.save(user);
-
+        //Génère les tokens JWT
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-
+        //Sauvegarde les tokens en base
         saveUserToken(accessToken, refreshToken, user);
 
         UtilisateurResponseDTO utilisateurResponseDTO = UtilisateurMapper.INSANCE.toUtilsateurResponse(user);
 
         logger.debug(REGISTER);
-        return new AuthenticationResponse(accessToken, refreshToken,"L'utilisateur a bien été enregistré", utilisateurResponseDTO);
+        return new AuthenticationResponse(accessToken, refreshToken,
+                "L'utilisateur a bien été enregistré", utilisateurResponseDTO);
     }
 
     @Transactional
     public AuthenticationResponse authenticate(User request) {
         logger.debug(LOGIN + Constantes.LOG_DEBUT);
-
+        //Vérifie l'existence d'un utilisateur
         User user = userRepository.findByPseudo(request.getUsername())
                 .orElseThrow(() -> {
                     logger.error("Utilisateur non trouvé avec le pseudo : {}", request.getUsername());
@@ -92,10 +96,10 @@ public class AuthenticationService {
             logger.error("Utilisateur suspendu (pseudo : {})", request.getUsername());
             throw new CustomException("Votre compte est suspendu", HttpStatus.FORBIDDEN);
         }
-
+        //génère les tokens
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-
+        //Supprime les token de l'utilisateur présents en base puis enregistre les nouveaux
         revokeAllTokenByUser(user);
         saveUserToken(accessToken, refreshToken, user);
 
