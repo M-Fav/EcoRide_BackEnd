@@ -23,6 +23,8 @@ public class FirebaseInitializer {
 
                 if (firebaseConfig != null) {
                     System.out.println("✅ FIREBASE_CONFIG detected. Using Heroku environment variable.");
+                    //remplacement des \\n en \n
+                    firebaseConfig = firebaseConfig.replace("\\n", "\n");
                     InputStream serviceAccount = new ByteArrayInputStream(firebaseConfig.getBytes(StandardCharsets.UTF_8));
 
                     options = FirebaseOptions.builder()
