@@ -2,10 +2,10 @@ package fr.ecoride.backend.controller;
 
 import fr.ecoride.backend.dto.avis.AvisRequestDTO;
 import fr.ecoride.backend.service.AvisService;
+import fr.ecoride.backend.utils.SanitizerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/avis")
@@ -16,6 +16,10 @@ public class AvisController {
 
     @PostMapping("/createAvis")
     public void createAvis(@RequestBody AvisRequestDTO avisRequestDTO) {
+        // Sanitize les champs texte avant traitement
+        if (avisRequestDTO.getCommentaire() != null) {
+            avisRequestDTO.setCommentaire(SanitizerUtil.sanitizeHtml(avisRequestDTO.getCommentaire()));
+        }
         avisService.createAvis(avisRequestDTO);
     }
 
@@ -30,4 +34,3 @@ public class AvisController {
     }
 
 }
-

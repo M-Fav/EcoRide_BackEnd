@@ -17,6 +17,7 @@ import fr.ecoride.backend.service.CovoiturageService;
 import fr.ecoride.backend.service.CovoitureurService;
 import fr.ecoride.backend.service.UserDetailsServiceImp;
 import fr.ecoride.backend.utils.Constantes;
+import fr.ecoride.backend.utils.SanitizerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,11 @@ public class CovoiturageController {
     @Autowired
     private UserDetailsServiceImp userDetailsServiceImp;
 
-    private static String DELETE_COVOITURAGE = "deleteCovoiturage";
-    private static String FIND_COVOITURAGE = "findCovoiturages";
-    private static String CREATE_COVOITURAGE = "createCovoiturage";
-    private static String START_COVOITURAGE = "startCovoiturage";
-    private static String TERMINATE_COVOITURAGE = "terminateCovoiturage";
+    private static final String DELETE_COVOITURAGE = "deleteCovoiturage";
+    private static final String FIND_COVOITURAGE = "findCovoiturages";
+    private static final String CREATE_COVOITURAGE = "createCovoiturage";
+    private static final String START_COVOITURAGE = "startCovoiturage";
+    private static final String TERMINATE_COVOITURAGE = "terminateCovoiturage";
 
     @GetMapping("/covoiturages")
     public ResponseEntity findCovoiturages(
@@ -54,6 +55,10 @@ public class CovoiturageController {
             @RequestParam(defaultValue = "") String date,
             @RequestParam(defaultValue = "") Integer utilisateurId) {
         logger.debug(FIND_COVOITURAGE + Constantes.LOG_DEBUT);
+
+        lieuDepart = SanitizerUtil.sanitizeHtml(lieuDepart);
+        lieuArrivee = SanitizerUtil.sanitizeHtml(lieuArrivee);
+        date = SanitizerUtil.sanitizeHtml(date);
 
         List<CovoiturageResponseDTO> listeCovoiturageResponseDTO =  covoiturageService.findCovoiturages(
                 utilisateurId, lieuDepart, lieuArrivee, date);
@@ -151,14 +156,16 @@ public class CovoiturageController {
         logger.debug(CREATE_COVOITURAGE + Constantes.LOG_FIN);
     }
 
-
-
     @PostMapping("/deleteCovoiturage")
     public void deleteCovoiturage(@RequestBody CovoiturageRequestDTO covoiturageRequestDTO) {
         logger.debug(DELETE_COVOITURAGE + Constantes.LOG_DEBUT);
 
         //On récupère le covoiturage
         Covoiturage covoiturage = covoiturageService.getCovoiturage(covoiturageRequestDTO.getCovoiturageId());
+        if (covoiturage == null) {
+            logger.warn("Covoiturage introuvable pour l'ID : " + covoiturageRequestDTO.getCovoiturageId());
+            return;
+        }
 
         //On récupère les passagers du covoiturage
         List<Covoitureur> listeCovoitureur = covoitureurService.getCovoitureursOfCovoiturage(covoiturageRequestDTO.getCovoiturageId());
@@ -174,12 +181,10 @@ public class CovoiturageController {
         logger.debug(DELETE_COVOITURAGE + Constantes.LOG_FIN);
     }
 
-
     @PutMapping("/startCovoiturage")
     public void startCovoiturage(@RequestBody CovoiturageRequestDTO covoiturageRequestDTO) {
         logger.debug(START_COVOITURAGE + Constantes.LOG_DEBUT);
 
-        //On appelle le service startCovoiturage pour démarrer le covoiturage
         covoiturageService.updateStatutCovoiturage(covoiturageRequestDTO.getCovoiturageId(),
                 CovoiturageStatutEnum.EN_COURS);
 
@@ -190,17 +195,17 @@ public class CovoiturageController {
     public void terminateCovoiturage(@RequestBody CovoiturageRequestDTO covoiturageRequestDTO) {
         logger.debug(TERMINATE_COVOITURAGE + Constantes.LOG_DEBUT);
 
-        //On passe le statut du covoiturage a terminé
         covoiturageService.updateStatutCovoiturage(covoiturageRequestDTO.getCovoiturageId(),
                 CovoiturageStatutEnum.TERMINE);
 
-        //On récupère les passagers du covoiturage
         List<Covoitureur> listeCovoitureur = covoitureurService.getCovoitureursOfCovoiturage(covoiturageRequestDTO.getCovoiturageId());
 
-        //On récupère le covoiturage
         Covoiturage covoiturage = covoiturageService.getCovoiturage(covoiturageRequestDTO.getCovoiturageId());
+        if (covoiturage == null) {
+            logger.warn("Covoiturage introuvable pour envoi des mails de validation.");
+            return;
+        }
 
-        //On envoi le mail de validation de covoiturage aux covoitureur passagés
         for(Covoitureur covoitureur: listeCovoitureur) {
             if (covoitureur.getRole().equals(CovoitureurRoleEnum.PASSAGER)) {
                 covoitureurService.sendEmailValidationCovoitureur(covoiturage, covoitureur);
@@ -209,6 +214,4 @@ public class CovoiturageController {
 
         logger.debug(TERMINATE_COVOITURAGE + Constantes.LOG_FIN);
     }
-
-
 }
