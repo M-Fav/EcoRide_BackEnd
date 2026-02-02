@@ -22,16 +22,6 @@ Avant de lancer le projet, assure-toi d'avoir installé :
 Le projet utilise une base MySQL distante (via ClearDB sur Heroku).  
 Les informations de connexion sont configurées dans le fichier `application.yml`.
 
-### 📌 Paramètres de connexion MySQL
-
-> ⚠️ Ces informations sont temporaires et seront **supprimées après la correction**.
-
-- **Host** : `e7qyahb3d90mletd.chr7pe7iynqr.eu-west-1.rds.amazonaws.com`
-- **Port** : `3306`
-- **Database** : `v6eqjfqi1n8d9orn`
-- **Username** : `fnjv44kcr8ym4e3e`
-- **Password** : `nm7i2x00jsuv7obm`
-
 ### 🔧 Connexion avec un SGBD (DBeaver)
 
 1. Ouvre DBeaver
